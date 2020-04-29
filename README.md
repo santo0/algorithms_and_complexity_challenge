@@ -6,3 +6,8 @@
   * Numero especific de mostres.
   * Path fitxer csv.
   * Path fitxer fasta.
+
+
+
+
+:)
