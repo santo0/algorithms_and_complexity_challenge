@@ -11,7 +11,3 @@
   * Path fitxer csv.
   * Path fitxer fasta.
 
-
-
-
-:)
