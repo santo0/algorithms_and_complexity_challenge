@@ -33,7 +33,6 @@ def get_fasta_sequences(fasta_file_name, sample_list):
                                                                     #Exit program
 def get_median_sample_by_id(sample_id, sample_list):
     for sample in sample_list:
-        print(sample_id, sample.id, sample_id == sample.id)
         if sample_id == sample.id:
             return sample
     return None 
@@ -71,7 +70,7 @@ def preprocess(csv_path):
 
 
 if __name__ == "__main__":
-    csv_path = ""
-    fasta_path = ""
+    csv_path = "/home/mruser/Downloads/sequences.csv"
+    fasta_path = "/home/mruser/Downloads/sequences.fasta"
     median_sample_list = preprocess(csv_path)
     get_fasta_sequences(fasta_path, median_sample_list)
