@@ -3,3 +3,7 @@ class MedianSample():
         self.id = id
         self.date = date
         self.fasta = fasta_sequence
+
+# main
+def test():
+    pass
