@@ -3,3 +3,8 @@ class MedianSample():
         self.id = id
         self.date = date
         self.fasta = fasta_sequence
+
+
+#Function that reads a csv file and calculates the median of each country.
+def preprocess(csv_file):
+    pass
