@@ -70,7 +70,7 @@ def preprocess(csv_path):
 
 
 if __name__ == "__main__":
-    csv_path = "/home/mruser/Downloads/sequences.csv"
-    fasta_path = "/home/mruser/Downloads/sequences.fasta"
+    csv_path = ""
+    fasta_path = ""
     median_sample_list = preprocess(csv_path)
     get_fasta_sequences(fasta_path, median_sample_list)
