@@ -12,6 +12,30 @@ class MedianSample():
     def __repr__(self):
         return 'MedianSample(id={i}, date={d}, geolocation={g})\n'.format(i=self.id, d=self.date, g=self.geolocation)
 
+def call_get_median(samples_list):
+    return get_median(samples_list, len(samples_list) // 2)
+
+def get_median(samples_list, samples_list_length):
+    sublists = [samples_list[i:i+5] for i in range(0, len(samples_list), 5)]
+    medians = [sorted(sublist, key=itemgetter(2))[len(sublist)//2] for sublist in sublists]
+    if len(medians) <= 5:
+        pivot = sorted(medians)[len(medians)//2]
+    else:
+        pivot = get_median(medians, len(medians)//2)
+    
+    low = [i for i in samples_list if i[2] <= pivot[2]]
+    low.remove(pivot)
+    high = [i for i in samples_list if i[2] > pivot[2]]
+    k = len(low)
+
+    if samples_list_length < k:
+        return get_median(low, samples_list_length)
+    elif samples_list_length > k:
+        return get_median(high, samples_list_length-k-1)
+    else:
+        return pivot
+
+
 #Function that reads a csv file and calculates the median of each country.
 def preprocess(csv_path):
     country_dict = {}
@@ -31,19 +55,8 @@ def preprocess(csv_path):
     csv_file.close()   
 
     medians_list = []
-    for country in country_dict.keys():
-        country_dict[country] = sorted(country_dict[country], key=itemgetter(2))
-
-        length = len(country_dict[country])
-        correct_position = length // 2
-        
-        median_sample = country_dict[country][correct_position]
-        final_sample = MedianSample(median_sample[0], median_sample[1], country)
+    for country in country_dict.keys():       
+        median_sample = call_get_median(country_dict[country])
+        final_sample = MedianSample(median_sample[0], median_sample[1],country)
         medians_list.append(final_sample)
-
     return medians_list
-
-
-if __name__ == "__main__":
-    csv_path = "/home/xavi_nadal/Documents/sequences.csv"
-    print(preprocess(csv_path))
