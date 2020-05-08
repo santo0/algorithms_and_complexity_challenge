@@ -6,7 +6,7 @@ import logging
 import csv
 import numpy as np
 from operator import itemgetter
-
+import alignment
 
 class MedianSample():
 
@@ -19,28 +19,13 @@ class MedianSample():
     def set_fasta_sequence(self, fasta_sequence):
         self.fasta = fasta_sequence
     
-    def __init_gap_line__(self,partial_scoring_matrix,gap_penal):
-        for x in range(len(partial_scoring_matrix[0])):
-            partial_scoring_matrix[0][x]=x*gap_penal
-        for y in range(len(partial_scoring_matrix)):
-            partial_scoring_matrix[y][0]=y*gap_penal
-
-    def __compute_matrix__(self,compared_fasta_data,scoring_matrix,gap_penal):
-        partial_scoring_matrix=np.empty([len(self.fasta)+1,len(compared_fasta_data)+1])
-        #partial_scoring_matrix=[[0 for x in range(len(self.fasta)+1)] for y in range(len(compared_fasta_data)+1)]
-        self.__init_gap_line__(partial_scoring_matrix,gap_penal)
-        for x in range(1,len(compared_fasta_data)+1):
-            for y in range(1,len(self.fasta)+1):
-                equal=partial_scoring_matrix[x-1][y-1]+1#scoring_matrix[compared_fasta_data[x-1]][self.fasta[y-1]]
-                #first_sequence_gap=partial_scoring_matrix[x-1][y]+gap_penal
-                #second_sequence_gap=partial_scoring_matrix[x][y-1]+gap_penal
-                #partial_scoring_matrix[x][y]=max([equal,first_sequence_gap,second_sequence_gap])
-        return partial_scoring_matrix
-
-    def align_sequence(self,compared_fasta_data,scoring_matrix,gap_penal):
-        partial_scoring_matrix=self.__compute_matrix__(compared_fasta_data,scoring_matrix,gap_penal)
-        maxScore=partial_scoring_matrix[len(partial_scoring_matrix)-1][len(partial_scoring_matrix[0])-1]
-        print("Hola")
+    def align_sequence(self,compared_fasta_data):
+        maxScore=alignment.alignment(self.fasta,compared_fasta_data)
+        #maxScore=alignment.alignment("GAATTCAGTTA","GGATCGA")
+        print(maxScore)
+    #    partial_scoring_matrix=self.__compute_matrix__(compared_fasta_data,scoring_matrix,gap_penal)
+    #    maxScore=partial_scoring_matrix[len(partial_scoring_matrix)-1][len(partial_scoring_matrix[0])-1]
+    #    print("Hola")
 
     def __repr__(self):
         return 'MedianSample(id={i}, date={d}, geolocation={g})\n'.format(i=self.id, d=self.date, g=self.geolocation)
@@ -113,6 +98,4 @@ if __name__ == "__main__":
     fasta_path = options.fasta
     median_sample_list = preprocess(csv_path)
     get_fasta_sequences(fasta_path, median_sample_list)
-    scoring_matrix={"A":{"A":1,"T":0,"C":0,"G":0},"T":{"A":0,"T":1,"C":0,"G":0},"C":{"A":0,"T":0,"C":1,"G":0},"G":{"A":0,"T":0,"C":0,"G":1}}
-    gap_penal=0
-    median_sample_list[0].align_sequence(median_sample_list[1].fasta,scoring_matrix,gap_penal)
+    median_sample_list[0].align_sequence(median_sample_list[1].fasta)
