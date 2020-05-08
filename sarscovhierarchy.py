@@ -7,7 +7,7 @@ import csv
 from operator import itemgetter
 import urllib
 import urllib.request
-
+import alignment
 
 class MedianSample():
 
@@ -19,7 +19,14 @@ class MedianSample():
         
     def set_fasta_sequence(self, fasta_sequence):
         self.fasta = fasta_sequence
+        
+    def align_sequence(self,compared_fasta_data):
+        maxScore=alignment.alignment(self.fasta,compared_fasta_data)
+        print(maxScore)
     
+    def get_fasta(self):
+        return self.fasta
+
     def __repr__(self):
         return 'MedianSample(id={i}, date={d}, geolocation={g})\n'.format(i=self.id, d=self.date, g=self.geolocation)
 
@@ -47,8 +54,7 @@ def get_median(samples_list, samples_list_length):
         return pivot
 
 def get_fasta_sequences(sample_list):
-    print("getting fasta sequences from the web")    
-    sample_list.append(MedianSample('penis','penis','penis','penis'))      
+    print("getting fasta sequences from the web")          
     for sample in sample_list:
         url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nucleotide&id={}&rettype=fasta'.format(sample.id)
         try: 
@@ -104,3 +110,4 @@ if __name__ == "__main__":
     csv_path = options.csv
     median_sample_list = preprocess(csv_path)
     get_fasta_sequences(median_sample_list)
+    median_sample_list[0].align_sequence(median_sample_list[1].get_fasta())
