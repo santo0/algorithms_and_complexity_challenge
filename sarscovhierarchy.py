@@ -8,6 +8,7 @@ from operator import itemgetter
 import urllib
 import urllib.request
 import alignment
+import time
 
 class MedianSample():
 
@@ -20,15 +21,33 @@ class MedianSample():
     def set_fasta_sequence(self, fasta_sequence):
         self.fasta = fasta_sequence
         
-    def align_sequence(self,compared_fasta_data):
-        maxScore=alignment.alignment(self.fasta,compared_fasta_data)
-        print(maxScore)
+    def align_sequence(self,other_sample):
+        seq_1 = self.fasta[:1000]
+        seq_2 = other_sample.fasta[:1000]
+        max_score=alignment.alignment(seq_1, seq_2)
+        return max_score
     
     def get_fasta(self):
         return self.fasta
 
     def __repr__(self):
         return 'MedianSample(id={i}, date={d}, geolocation={g})\n'.format(i=self.id, d=self.date, g=self.geolocation)
+
+def get_samples_alignement_matrix(samples_list):
+    total_samples = len(samples_list)
+    score_matrix =[[None for j in range(total_samples)]for i in range(total_samples)]
+    for i in range(total_samples):
+        for j in range(total_samples):
+            #Normalitzar per a q siguin coeficients entre -1 i 1
+            if None == score_matrix[j][i]:
+                sample_1 = samples_list[i]
+                sample_2 = samples_list[j]
+                score_matrix[i][j] = sample_1.align_sequence(sample_2)
+            else:
+                score_matrix[i][j] = score_matrix[j][i]
+    return score_matrix
+
+
 
 def call_get_median(samples_list):
     return get_median(samples_list, len(samples_list) // 2)
@@ -71,10 +90,6 @@ def get_fasta_sequences(sample_list):
         sample.fasta = ''.join(splitted_data[1:])
     print("fasta sequences obtined")    
 
-
-
-
-
 #Function that reads a csv file and calculates the median of each country.
 def preprocess(csv_path):
     country_dict = {}
@@ -108,6 +123,15 @@ if __name__ == "__main__":
     if not (os.path.isfile(options.csv)):
         sys.exit(1)
     csv_path = options.csv
+    start_time = time.time()
     median_sample_list = preprocess(csv_path)
+    print("--- %s seconds for preprocessing csv ---" % (time.time() - start_time))
+    start_time = time.time()
     get_fasta_sequences(median_sample_list)
-    median_sample_list[0].align_sequence(median_sample_list[1].get_fasta())
+    print("--- %s seconds for getting fastas ---" % (time.time() - start_time))
+    print(len(median_sample_list))
+    print('Start score matrix')
+    start_time = time.time()
+    score_matrix = get_samples_alignement_matrix(median_sample_list)
+    print(score_matrix)
+    print("--- %s seconds for getting score matrix ---" % (time.time() - start_time))
