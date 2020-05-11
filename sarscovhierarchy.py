@@ -72,9 +72,6 @@ def get_fasta_sequences(sample_list):
     print("fasta sequences obtined")    
 
 
-
-
-
 #Function that reads a csv file and calculates the median of each country.
 def preprocess(csv_path):
     country_dict = {}

@@ -1,5 +1,5 @@
 #define PY_SSIZE_T_CLEAN
-#include </usr/include/python3.7m/Python.h>
+#include </usr/include/python3.6m/Python.h>
 /*
 #def __init_gap_line__(self,partial_scoring_matrix,gap_penal):
     #    for x in range(len(partial_scoring_matrix[0])):
