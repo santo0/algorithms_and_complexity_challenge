@@ -112,28 +112,32 @@ def get_median(samples_list, samples_list_length):
     return pivot
 
 
-def get_fasta_sequences(sample_list):
+def get_fasta_sequences(sample_list, dir_path):
     '''Obtain FASTA sequences from the web'''
     print("getting fasta sequences from the web")
     for sample in sample_list:
-        url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/' +\
-              'efetch.fcgi?db=nucleotide&id={}&rettype=fasta'.format(
-                  sample.sample_id)
-        try:
-            response = urllib.request.urlopen(url)
-            # es suposa q larxiu donat correspon al id
-            data = response.read().decode('utf-8')
-        except urllib.error.HTTPError:
-            print("sample whit id {} doesn't exist".format(sample.sample_id))
-            answer = ''
-            while answer not in ('yes', 'no'):
-                answer = input("exit program? yes / no\n")
-                if answer == 'yes':
-                    sys.exit(1)
+        fasta_path = dir_path + sample.sample_id + ".fasta"
+        if os.path.isfile(fasta_path):
+            f_open = open(fasta_path)
+            data = f_open.read()
+            f_open.close()
+        else:
+            url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/' +\
+                'efetch.fcgi?db=nucleotide&id={}&rettype=fasta'.format(
+                    sample.sample_id)
+            try:
+                response = urllib.request.urlopen(url)
+                # es suposa q larxiu donat correspon al id
+                data = response.read().decode('utf-8')
+            except urllib.error.HTTPError:
+                print("sample whit id {} doesn't exist".format(sample.sample_id))
+                sys.exit(1)
+            f_open = open(fasta_path, '+w')
+            f_open.write(data)
+            f_open.close()
         splitted_data = data.split('\n')
         sample.sequence = ''.join(splitted_data[1:])
     print("fasta sequences obtined")
-# Function that reads a csv file and calculates the median of each country.
 
 
 def preprocess(csv_path):
@@ -169,26 +173,28 @@ def preprocess(csv_path):
 def main():
     '''Get arguments and calls main functions'''
     parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--csv",
-                        dest="csv",
-                        default='./sequences.csv',
-                        help="path of csv file")
+    parser.add_argument('-d', '--dir',
+                        dest='dir',
+                        default='',
+                        help='relative path of directory of csv and fasta.\n'+\
+                        'Exemple: ./sarscovhierarchy.py -d data_set/ ')
     args = parser.parse_args()
-    if not os.path.isfile(args.csv):
+    dir_path = args.dir
+    if not os.path.isdir(dir_path):
         sys.exit(1)
-    csv_path = args.csv
+    csv_path = dir_path + 'sequences.csv'
     start_time = time.time()
     median_sample_list = preprocess(csv_path)
     print("--- %s seconds for preprocessing csv ---" %
           (time.time() - start_time))
     start_time = time.time()
-    get_fasta_sequences(median_sample_list)
+    get_fasta_sequences(median_sample_list, dir_path)
     print("--- %s seconds for getting fastas ---" % (time.time() - start_time))
     print(len(median_sample_list))
     print('Start score matrix')
     start_time = time.time()
-    score_matrix = get_samples_alignement_matrix(median_sample_list)
-    normalize_sample_alignment_matrix(score_matrix)
+    #score_matrix = get_samples_alignement_matrix(median_sample_list)
+    #print(score_matrix)
     print("--- %s seconds for getting score matrix ---" %
           (time.time() - start_time))
 
