@@ -1,3 +1,10 @@
+'''
+    Title: sarscovhierarchy.py
+    Author: Guillem Camats Felip, Adrià Juvé Sánchez, Martí La Rosa Ramos, Xavier Nadal Reales
+    Date: 25-5-2020
+    Code version: 1.0.0
+    Availability: https://github.com/santo0/algorithms_and_complexity_challenge
+'''
 import sys
 import argparse
 import os.path
@@ -8,8 +15,10 @@ import urllib.request
 import time
 import alignment
 
+MAX_ALIGN_LENGTH = 1000
 
 class MedianSample():
+    '''Sample of median length of a country'''
 
     def __init__(self, sample_id, date, geolocation, sequence=""):
         self.sample_id = sample_id
@@ -18,11 +27,13 @@ class MedianSample():
         self.sequence = sequence
 
     def set_fasta_sequence(self, fasta_sequence):
+        '''Assign a sequence'''
         self.sequence = fasta_sequence
 
     def align_sequence(self, other_sample):
-        seq_1 = self.sequence[:1000]
-        seq_2 = other_sample.sequence[:1000]
+        '''Sets maximum length of sequence'''
+        seq_1 = self.sequence[:MAX_ALIGN_LENGTH]
+        seq_2 = other_sample.sequence[:MAX_ALIGN_LENGTH]
         max_score = alignment.alignment(seq_1, seq_2)
         return max_score
 
@@ -33,6 +44,7 @@ class MedianSample():
 
 
 def get_samples_alignement_matrix(samples_list):
+    '''Get the matrix of scores of all sample alignments'''
     total_samples = len(samples_list)
     score_matrix = [[None for j in range(total_samples)]
                     for i in range(total_samples)]
@@ -49,10 +61,12 @@ def get_samples_alignement_matrix(samples_list):
 
 
 def call_get_median(samples_list):
+    '''Get_median of samples list'''
     return get_median(samples_list, len(samples_list) // 2)
 
 
 def get_median(samples_list, samples_list_length):
+    '''Get median of samples list'''
     sublists = [samples_list[i:i+5] for i in range(0, len(samples_list), 5)]
     medians = [sorted(sublist, key=itemgetter(2))[len(sublist)//2]
                for sublist in sublists]
@@ -66,13 +80,13 @@ def get_median(samples_list, samples_list_length):
     k = len(low)
     if samples_list_length < k:
         return get_median(low, samples_list_length)
-    elif samples_list_length > k:
+    if samples_list_length > k:
         return get_median(high, samples_list_length-k-1)
-    else:
-        return pivot
+    return pivot
 
 
 def get_fasta_sequences(sample_list):
+    '''Obtain FASTA sequences from the web'''
     print("getting fasta sequences from the web")
     for sample in sample_list:
         url = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/' +\
@@ -96,6 +110,7 @@ def get_fasta_sequences(sample_list):
 
 
 def preprocess(csv_path):
+    '''Classify data from csv file'''
     country_dict = {}
 
     csv_file = open(csv_path, "r")
@@ -125,6 +140,7 @@ def preprocess(csv_path):
 
 
 def main():
+    '''Get arguments and calls main functions'''
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--csv",
                         dest="csv",
