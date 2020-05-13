@@ -13,9 +13,10 @@ from operator import itemgetter
 import urllib
 import urllib.request
 import time
+import matplotlib.pyplot as plt
 import alignment
 
-MAX_ALIGN_LENGTH = 1000
+MAX_ALIGN_LENGTH = 10000
 
 class MedianSample():
     '''Sample of median length of a country'''
@@ -51,14 +52,34 @@ def get_samples_alignement_matrix(samples_list):
     for i in range(total_samples):
         for j in range(total_samples):
             # Normalitzar per a q siguin coeficients entre -1 i 1
-            if score_matrix[j][i] is None:
-                sample_1 = samples_list[i]
-                sample_2 = samples_list[j]
-                score_matrix[i][j] = sample_1.align_sequence(sample_2)
+            if i == j:
+                score_matrix[i][j] = alignment.max_alignment(samples_list[i].sequence)
             else:
-                score_matrix[i][j] = score_matrix[j][i]
+                if score_matrix[j][i] is None:
+                    sample_1 = samples_list[i]
+                    sample_2 = samples_list[j]
+                    score_matrix[i][j] = sample_1.align_sequence(sample_2)
+                else:
+                    score_matrix[i][j] = score_matrix[j][i]
     return score_matrix
 
+def normalize_sample_alignment_matrix(score_matrix):
+    total_samples = len(score_matrix)
+    new_matrix = [[None for j in range(total_samples)]
+                for i in range(total_samples)]
+
+    for i in range(total_samples):
+        for j in range(total_samples):
+            if i == j:
+                new_matrix[i][j] = 1
+            else:
+                if new_matrix[j][i] is None:
+                    new_matrix[i][j] = score_matrix[i][j] / max((score_matrix[i][i],score_matrix[j][j]))
+                else:
+                    new_matrix[i][j] = new_matrix[j][i]
+    plt.imshow(new_matrix, cmap='hot', interpolation='nearest')
+    plt.show()
+    return new_matrix
 
 def call_get_median(samples_list):
     '''Get_median of samples list'''
@@ -161,7 +182,7 @@ def main():
     print('Start score matrix')
     start_time = time.time()
     score_matrix = get_samples_alignement_matrix(median_sample_list)
-    print(score_matrix)
+    normalize_sample_alignment_matrix(score_matrix)
     print("--- %s seconds for getting score matrix ---" %
           (time.time() - start_time))
 
