@@ -115,7 +115,9 @@ int computeMatrix(char* sequence1,char* sequence2,int matrix[4][4],int gapPenal)
             *(partial_scoring_matrix+(yIndex*(xlen+1))+xIndex)=max(max(equal,firstSequenceGap),secondSequenceGap);
         }
     }
-    return *(partial_scoring_matrix+(ylen*(xlen+1))+xlen);
+    int returnedValue=*(partial_scoring_matrix+(ylen*(xlen+1))+xlen);
+    free(partial_scoring_matrix);
+    return returnedValue;
 }
 
 static PyObject * alignment_function(PyObject *self, PyObject *args)
