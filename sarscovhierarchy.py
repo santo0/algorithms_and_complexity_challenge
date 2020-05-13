@@ -16,7 +16,7 @@ import time
 import matplotlib.pyplot as plt
 import alignment
 
-MAX_ALIGN_LENGTH = 5000
+MAX_ALIGN_LENGTH = 1000
 
 
 class MedianSample():
@@ -114,7 +114,7 @@ def get_median(samples_list, samples_list_length):
 
 def get_fasta_sequences(sample_list, dir_path):
     '''Obtain FASTA sequences from the web'''
-    print("getting fasta sequences from the web")
+    print("Getting fasta sequences from the web")
     for sample in sample_list:
         fasta_path = dir_path + sample.sample_id + ".fasta"
         if os.path.isfile(fasta_path):
@@ -137,7 +137,7 @@ def get_fasta_sequences(sample_list, dir_path):
             f_open.close()
         splitted_data = data.split('\n')
         sample.sequence = ''.join(splitted_data[1:])
-    print("fasta sequences obtined")
+    print("Fasta sequences obtained")
 
 
 def preprocess(csv_path):
@@ -154,11 +154,11 @@ def preprocess(csv_path):
                 row["Geo_Location"] != "":
             values_tuples = (row["Accession"],
                              row["Release_Date"], int(row["Length"]))
-            if row["Geo_Location"].split(":")[0] in country_dict.keys():
-                country_dict[row["Geo_Location"].split(
-                    ":")[0]].append(values_tuples)
+            country_name = row["Geo_Location"].split(":")[0]
+            if country_name in country_dict.keys():
+                country_dict[country_name].append(values_tuples)
             else:
-                country_dict[row["Geo_Location"].split(":")[0]] = [
+                country_dict[country_name] = [
                     values_tuples]
     csv_file.close()
     medians_list = []
@@ -193,8 +193,8 @@ def main():
     print(len(median_sample_list))
     print('Start score matrix')
     start_time = time.time()
-    #score_matrix = get_samples_alignement_matrix(median_sample_list)
-    #print(score_matrix)
+    score_matrix = get_samples_alignement_matrix(median_sample_list)
+    print(score_matrix)
     print("--- %s seconds for getting score matrix ---" %
           (time.time() - start_time))
 
