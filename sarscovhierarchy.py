@@ -16,7 +16,7 @@ import time
 import matplotlib.pyplot as plt
 import alignment
 
-MAX_ALIGN_LENGTH = 10000
+MAX_ALIGN_LENGTH = 5000
 
 
 class MedianSample():
