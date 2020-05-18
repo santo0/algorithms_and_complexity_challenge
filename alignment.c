@@ -89,8 +89,8 @@ int getNucleoidData(char compareChar,char comparedChar,int matrix[4][4]){
     }
 }
 
-int max(int firstNumber,int secondNumber){
-    return (firstNumber<secondNumber)?secondNumber:firstNumber;
+int min(int firstNumber,int secondNumber){
+    return (firstNumber>secondNumber)?secondNumber:firstNumber;
 }
 int computeMatrix(char* sequence1,char* sequence2,int matrix[4][4],int gapPenal)
 {   
@@ -112,7 +112,7 @@ int computeMatrix(char* sequence1,char* sequence2,int matrix[4][4],int gapPenal)
             int equal=*(partial_scoring_matrix+((yIndex-1)*(xlen+1))+(xIndex-1))+getNucleoidData(sequence1[xIndex-1],sequence2[yIndex-1],matrix);
             int firstSequenceGap=*(partial_scoring_matrix+((yIndex-1)*(xlen+1))+xIndex)+gapPenal;
             int secondSequenceGap=*(partial_scoring_matrix+(yIndex*(xlen+1))+(xIndex-1))+gapPenal;
-            *(partial_scoring_matrix+(yIndex*(xlen+1))+xIndex)=max(max(equal,firstSequenceGap),secondSequenceGap);
+            *(partial_scoring_matrix+(yIndex*(xlen+1))+xIndex)=min(min(equal,firstSequenceGap),secondSequenceGap);
         }
     }
     int returnedValue=*(partial_scoring_matrix+(ylen*(xlen+1))+xlen);
@@ -127,8 +127,8 @@ static PyObject * alignment_function(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "ss", &sequence1,&sequence2)){
         return NULL;
     }
-    int scoringMatrix[4][4]={{10,-4,-3,-1},{-4,8,0,-4},{-3,0,9,-5},{-1,-3,-5,7}};
-    int gapPenal=-5;
+    int scoringMatrix[4][4]={{0,1,1,1},{1,0,1,1},{1,1,0,1},{1,1,1,0}};
+    int gapPenal=1;
     return PyLong_FromLong(computeMatrix(sequence1,sequence2,scoringMatrix,gapPenal));
 }
 
@@ -138,7 +138,7 @@ static PyObject * max_alignment_value(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &sequence1)){
         return NULL;
     }
-    int scoringMatrix[4][4]={{10,-4,-3,-1},{-4,8,0,-4},{-3,0,9,-5},{-1,-3,-5,7}};
+    int scoringMatrix[4][4]={{0,1,1,1},{1,0,1,1},{1,1,0,1},{1,1,1,0}};
     int maxPuntuation=0;
     int xlen=strlen(sequence1);
     for(int i=0;i<xlen;i+=1){
