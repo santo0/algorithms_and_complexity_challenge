@@ -20,16 +20,17 @@ fn compute_matrix(sequence1: &str, sequence2: &str) -> u32 {
     let length_sequence1_width = sequence1.chars().count();
     let length_sequence2_height = sequence2.chars().count();
     
-    let mut scoring_matrix = vec![vec![0; length_sequence1_width]; length_sequence2_height]; //nose mira aixo que soc MONGOLO
+    let mut scoring_matrix = vec![vec![0; length_sequence2_height]; length_sequence1_width]; //nose mira aixo que soc MONGOLO
     for i in 0..length_sequence1_width {
-        scoring_matrix[0][i] = i;
+        scoring_matrix[i][0] = i;
     }  
     for j in 0..length_sequence2_height {
-        scoring_matrix[j][0] = j;
+        scoring_matrix[0][j] = j;
     }  
+
     for i in 1..length_sequence1_width {
         for j in 1..length_sequence2_height {
-            let equal = if sequence1.chars().nth(i - 1) == sequence2.chars().nth(j - 1) {
+            let equal = if sequence1.chars().nth(i) == sequence2.chars().nth(j) {
                 scoring_matrix[i - 1][j - 1]
             } else {
                 scoring_matrix[i - 1][j - 1] + 1
@@ -40,8 +41,7 @@ fn compute_matrix(sequence1: &str, sequence2: &str) -> u32 {
             scoring_matrix[i][j] = min(equal, first_sequence_gap, second_sequence_gap);
         }
     }
-    let result = scoring_matrix[length_sequence1_width - 1][length_sequence2_height - 1] as u32;
-    return result;
+    return scoring_matrix[length_sequence1_width-1][length_sequence2_height-1] as u32;
 }
 fn min(first_number: usize, second_number: usize, third_number: usize) -> usize {
     if first_number < second_number && first_number < third_number {
