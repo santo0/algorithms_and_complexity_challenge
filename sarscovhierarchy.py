@@ -182,28 +182,25 @@ def calculate_min_puntuation(newCluster,score_matrix):
         new_min=-1
         for number in newCluster[key]:
             newPuntuation=0
-            for i in range(0,len(score_matrix)):
-                newPuntuation+=score_matrix[number][i]
-           
-            if new_min==-1 or (new_min==newPuntuation and int(key)==number)  or new_min>newPuntuation:
+            for i in range(0,len(newCluster[key])):
+                newPuntuation+=score_matrix[number][newCluster[key][i]]
+            if new_min==-1  or new_min>newPuntuation:
                 new_min=newPuntuation
                 new_min_number=number
         newPoints.append(new_min_number)
-    #print(newPoints)
     return newPoints
 
 
 
 def create_clustering(points,clusters,score_matrix):
-    newClusters={str(point):[point] for point in points}
+    newClusters={str(point):[] for point in points}
     for i in range(0,len(score_matrix)):
         new_min=-1
-        if i not in points:
-            for point in points:
-                if new_min==-1 or new_min>score_matrix[i][point]:
-                    new_min=score_matrix[i][point]
-                    closestPoint=point
-            newClusters[str(closestPoint)].append(i)
+        for point in points:
+            if new_min==-1 or i==point or new_min>score_matrix[i][point]:
+                new_min=score_matrix[i][point]
+                closestPoint=point
+        newClusters[str(closestPoint)].append(i)
     print(newClusters)
     if check_equal_cluster(newClusters,clusters):
         return newClusters
