@@ -15,6 +15,7 @@ import urllib.request
 import time
 import matplotlib.pyplot as plt
 import alignment
+import random
 
 MAX_ALIGN_LENGTH = 1000
 
@@ -54,8 +55,7 @@ def get_samples_alignement_matrix(samples_list):
         for j in range(total_samples):
             # Normalitzar per a q siguin coeficients entre -1 i 1
             if i == j:
-                score_matrix[i][j] = alignment.max_alignment(
-                    samples_list[i].sequence)
+                score_matrix[i][j] = 0
             else:
                 if score_matrix[j][i] is None:
                     sample_1 = samples_list[i]
@@ -170,6 +170,45 @@ def preprocess(csv_path):
     return medians_list
 
 
+def check_equal_cluster(newCluster,oldCluster):
+    for key in newCluster.keys():
+        if key not in oldCluster.keys() or set(newCluster[key])-set(oldCluster[key])!=set():
+            return False
+    return True
+
+def calculate_min_puntuation(newCluster,score_matrix):
+    newPoints=[]
+    for key in newCluster.keys():
+        new_min=-1
+        for number in newCluster[key]:
+            newPuntuation=0
+            for i in range(0,len(newCluster[key])):
+                newPuntuation+=score_matrix[number][newCluster[key][i]]
+            if new_min==-1  or new_min>newPuntuation:
+                new_min=newPuntuation
+                new_min_number=number
+        newPoints.append(new_min_number)
+    return newPoints
+
+
+
+def create_clustering(points,clusters,score_matrix):
+    newClusters={str(point):[] for point in points}
+    for i in range(0,len(score_matrix)):
+        new_min=-1
+        for point in points:
+            if new_min==-1 or i==point or new_min>score_matrix[i][point]:
+                new_min=score_matrix[i][point]
+                closestPoint=point
+        newClusters[str(closestPoint)].append(i)
+    print(newClusters)
+    if check_equal_cluster(newClusters,clusters):
+        return newClusters
+    else:
+        return create_clustering(calculate_min_puntuation(newClusters,score_matrix),newClusters,score_matrix)
+  
+    
+
 def main():
     '''Get arguments and calls main functions'''
     parser = argparse.ArgumentParser()
@@ -197,7 +236,19 @@ def main():
     print(score_matrix)
     print("--- %s seconds for getting score matrix ---" %
           (time.time() - start_time))
-
+    
+    points=[]
+    i=0
+    while i<6:
+        element=random.randrange(0,30,1)
+        if element not in points:
+            points.append(element)
+            i+=1
+    print(points)
+    clustering=[[0,1,4,7,8,3],[1,0,3,6,5,2],[4,3,0,3,4,3],[7,6,3,0,5,4],[6,5,4,5,0,3],[3,2,3,4,3,0]]
+    resultClusters=create_clustering([1,4],{},clustering)
+    print(resultClusters)
+    
 
 if __name__ == "__main__":
     main()
