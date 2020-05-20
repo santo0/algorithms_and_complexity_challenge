@@ -17,31 +17,41 @@ fn alignment(first: *const c_char, second: *const c_char) -> u32 {
 }
 
 fn compute_matrix(sequence1: &str, sequence2: &str) -> u32 {
-    let length_sequence1_width = sequence1.chars().count();
-    let length_sequence2_height = sequence2.chars().count();
+    let length_sequence1 = sequence1.chars().count();
+    let length_sequence2 = sequence2.chars().count();
     
-    let mut scoring_matrix = vec![vec![0; length_sequence2_height]; length_sequence1_width]; //nose mira aixo que soc MONGOLO
-    for i in 0..length_sequence1_width {
+    let width = length_sequence1 + 1;
+    let height = length_sequence2 + 1;
+
+    let mut scoring_matrix = vec![vec![0; height]; width];
+
+    for i in 0..width {
         scoring_matrix[i][0] = i;
     }  
-    for j in 0..length_sequence2_height {
+    for j in 0..height {
         scoring_matrix[0][j] = j;
     }  
 
-    for i in 1..length_sequence1_width {
-        for j in 1..length_sequence2_height {
-            let equal = if sequence1.chars().nth(i) == sequence2.chars().nth(j) {
+    for i in 1..width {
+        for j in 1..height {
+            let different = if i >= length_sequence1 || j >= length_sequence2{
+                true
+            } else {
+                false
+            };
+            let a = sequence1.chars().nth(i);
+            let b = sequence2.chars().nth(j);
+            let equal = if a == b && !different {
                 scoring_matrix[i - 1][j - 1]
             } else {
                 scoring_matrix[i - 1][j - 1] + 1
             };
-            let first_sequence_gap = scoring_matrix[i - 1][j];
-            
-            let second_sequence_gap = scoring_matrix[i][j - 1];
+            let first_sequence_gap = scoring_matrix[i - 1][j] + 1; 
+            let second_sequence_gap = scoring_matrix[i][j - 1] + 1;
             scoring_matrix[i][j] = min(equal, first_sequence_gap, second_sequence_gap);
         }
     }
-    return scoring_matrix[length_sequence1_width-1][length_sequence2_height-1] as u32;
+    return scoring_matrix[width-1][height-1] as u32;
 }
 fn min(first_number: usize, second_number: usize, third_number: usize) -> usize {
     if first_number < second_number && first_number < third_number {
@@ -52,3 +62,6 @@ fn min(first_number: usize, second_number: usize, third_number: usize) -> usize 
         return third_number;
     }
 }
+
+
+
