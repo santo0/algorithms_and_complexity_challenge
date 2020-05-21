@@ -1,7 +1,6 @@
 # Introducció
 
-En aquest document es presentaran els diferents algoritmes i metodologies que s'han utilitzat durant la pràctica, juntament amb l'anàlisis d'aquests i la seva implementació.
-La documentació està estructurada en diferents apartats,preprocessament, alineament de seqüències i classificació, cada un explicant la seva funcionalitat.
+Aquí va la introducció
 
 # Main
 
@@ -12,8 +11,6 @@ Els arguments acceptats són el següents:
 + -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades
 
 # Preprocessament
-
-En el preprocessament es recullen i classifiquen les dades obtingudes del fitxer .csv i els fitxers FASTA descarregats.
 
 ## Tractament de les seqüències del fitxer csv
 
@@ -44,10 +41,9 @@ Cost O(n(m+k)), on
 + m = number of keys in country_dictionay
 + k = length of string
 
-## Obtenció del país de longitud mediana
+## Obtenció de la mostra de longitud mediana d’un país 
 
-Per tal d'obtenir un cost O(n) en l'obtenció de la mediana, ens hem basat en l'algoritme median of medians. Aquest algoritme divideix la llista original en diferents subllistes i calcula la mediana aproximada d'aquestes subllistes.
-Un cop tenim aquestes medianes, es calcularà la mediana d'aquesta nova llista, la qual s'utilitzarà com a pivot. Seguidament es col·locaran els elements més petits o iguals al pivot a l'esquerra i els més grans a la dreta. Aquest procés es repetirà recursivament fins que la posició sigui exactament igual al número d'elements més petits que el pívot.
+Vam escollir aquest algoritme per que se’ns va demanar implementar un algorisme de càlcul de mediana utilitzant dividir i vèncer i vam veure que aquest complia els requisits.
 
 ### Pseudocodi
 
@@ -73,7 +69,8 @@ Un cop tenim aquestes medianes, es calcularà la mediana d'aquesta nova llista, 
 
 ### Cost teòric
 
-Cost O(n), on n és el nombre d'elements d'un país
+Cost O(n), on 
++ n és el nombre d'elements d'un país
 
 ## Obtenció de seqüències Fasta
 
@@ -98,8 +95,6 @@ El cost teòric és d'ordre O(n(m+k)) tal que
 
 # Alineament de seqüències
 
-En l'alineament de seqüències es puntua la similitud entre dues seqüències. En el nostre cas, com més gran és aquest nombre, més similar és.
-
 ## Anàlisis dels algorismes existents
 
 Pel que fa a l'alineament de seqüències s'han trobat els següents algorismes:
@@ -123,9 +118,7 @@ En el nostre cas s'ha elegit l'algorisme de Needleman-Wunsch per les següents r
 
 ### Pseudocodi de l'algorisme seleccionat
 
-Primerament s'ha de mencionar que l'algorisme s'inicia amb una matriu amb els costs de totes les transformacions possibles amb les dades de la seqüència:
-
-Per exemple: A -> G = -3, A -> T = -8, etc
+Primerament s'ha de mencionar que teoricament l'algorisme s'inicia amb una matriu amb els costs de totes les transformacions possibles amb les dades de la seqüència, però nosaltres hem utilitzat uns costos tal que no necessitem d’aquesta matriu. Si no s’ha de fer cap transofrmació, llavors el cost és 0, si n’ha de fer una, llavors el cost puja a 1.
 
 A més a més també s'ha d'afegir una penalització de gap.
 
@@ -162,7 +155,9 @@ Per a solucionar-lo s'havien proposat les següents accions:
 
 2. Intentar efectuar l'algorisme millorant Python amb llenguatges més ràpids com serien Rust, Haskell, C, C++, etc.
 
-En el nostre cas s'ha decidit efectuar les dues mesures, el qual ha millorat enormement el temps d'execució.
+En el nostre cas s'ha decidit efectuar l’algorisme estenent el nostre script de Python amb un programa de C el qual s’en encarregaria de fer l’alineació entre dos seqüències. Aquest canvi redueix el temps d’alineació entre dos seqüències de 29000 caràcters a 3.7 segons aprox. Encara així, per alinear totes les mostres amb tota la resta, l’execució pot arribar a durar fins a 21 minuts. Degut això, es pot reduir la mida de les seqüències alineades, fent així que el temps d’alineació sigui casi imperceptible.
+
+Depenent del sistema de puntuació utilitzat el temps d’execució varia. Nosaltres hem escollit el que creiem que és el sistema de puntuació menys intrusiu en el runtime.
 
 Com hem dit anteriorment, el cost teòric serà O(nm), on
 
@@ -170,3 +165,17 @@ Com hem dit anteriorment, el cost teòric serà O(nm), on
 + m = llargada seqüència 2
 
 ### Anàlisis Experimental
+![Grafica](./Grafica.png)
+Primer de tot s'ha de mencionar que la validesa el grafic proporcionat també depen parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat es mes qüestionable.
+
+Per a capturar les dades s'ha decidit comparar una seqüencia amb si mateixa utilitzant diferentes llargades.
+
+Com es pot comprovar, aquesta grafica s'aproxima al cost teoric "quadratic" mencionat anteriorment.
+
+## Classificació
+
+Per a la classificació que es van proposar son els següents:
+1. Hierarchical Agglomerative Clustering 
+    + Aquest algoritme crea una estructura en forma d'arbre mitjançant l'agrupament de clusters que contenen elements proxims entre ells.
+    + 
+2. k-medoids
