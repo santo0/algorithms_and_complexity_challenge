@@ -7,18 +7,12 @@
 '''
 
 
-def check_equal_cluster(new_cluster, old_cluster):
-    for key in new_cluster:
-        if key not in old_cluster.keys() or set(new_cluster[key]) - set(old_cluster[key]) != set():
-            return False
-    return True
-
 def calculate_min_puntuation(new_cluster, score_matrix):
     new_points = []
     for key in new_cluster:
         new_min = -1
         for number in new_cluster[key]:
-            new_puntuation = 0
+            new_puntuation = -1
             for i in range(len(new_cluster[key])):
                 new_puntuation += score_matrix[number][new_cluster[key][i]]
             if new_min == -1  or new_min > new_puntuation:
@@ -32,14 +26,15 @@ def create_clustering(points, clusters, score_matrix):
     for i in range(len(score_matrix)):
         new_min = -1
         for point in points:
-            if new_min == -1 or i == point or new_min > score_matrix[i][point]:
+            if  i == point or ((new_min == -1 or new_min > score_matrix[i][point]) and i not in points):
                 new_min = score_matrix[i][point]
                 closest_point = point
         new_clusters[str(closest_point)].append(i)
-    print(new_clusters)
-    if check_equal_cluster(new_clusters, clusters):
+    print("New_clusters "+str(new_clusters))
+    next_centers = calculate_min_puntuation(new_clusters, score_matrix)
+    if all(elem in next_centers for elem in points):
         return new_clusters
     else:
-        return create_clustering(calculate_min_puntuation(new_clusters, score_matrix),
+        return create_clustering(next_centers,
                                  new_clusters,
                                  score_matrix)
