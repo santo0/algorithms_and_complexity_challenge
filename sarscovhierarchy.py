@@ -22,7 +22,7 @@ lib = cdll.LoadLibrary("alignment_rust/target/release/libalignment_rust.so")
 lib.alignment.argtypes = (c_char_p, c_char_p)
 lib.alignment.restype = c_int
 
-MAX_ALIGN_LENGTH = 1000
+MAX_ALIGN_LENGTH = 5000
 
 class MedianSample():
     '''Sample of median length of a country'''
@@ -41,16 +41,14 @@ class MedianSample():
         '''Sets maximum length of sequence'''
         seq_1 = self.sequence[:MAX_ALIGN_LENGTH]
         seq_2 = other_sample.sequence[:MAX_ALIGN_LENGTH]
-        print("hola")
         max_score = alignment.alignment(seq_1, seq_2)
         return max_score
 
     def align_sequence_rust(self, other_sample):
+        
         seq_1 = self.sequence[:MAX_ALIGN_LENGTH].encode()
         seq_2 = other_sample.sequence[:MAX_ALIGN_LENGTH].encode()
-        
         max_score = lib.alignment(seq_1, seq_2)
-        print(max_score)
         return max_score
 
     def __repr__(self):
@@ -253,8 +251,8 @@ def main():
     print(len(median_sample_list))
     print('Start score matrix')
     start_time = time.time()
-    score_matrix = get_samples_alignement_matrix(median_sample_list)
-    print(score_matrix)
+    #score_matrix = get_samples_alignement_matrix(median_sample_list)
+    #print(score_matrix)
     print("--- %s seconds for getting score matrix ---" %
           (time.time() - start_time))
 
