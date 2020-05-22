@@ -1,12 +1,10 @@
 # algorithms_and_complexity_challenge
 
 ## TODO list
-* Estructura repositori (Proposta):
-  * Fer una branca per cada tasca (preprocessament, alineació, classificació).
-  * D'aquestes branques sortiran més branques les quals tractarien objectius més petits.
+* Separar per moduls.
+* Testos unitaris.
+* Passar pylint.
+* Representació gràfica.
+* Algo més, preguntar als companys.
 
-* Diferents parametres inicials (Proposta): 
-  * Modo debug.
-  * Numero especific de mostres.
-  * Path fitxer csv.
-  * Path fitxer fasta.
+![Alt Text](https://images.uncyclomedia.co/inciclopedia/es/e/ee/Hypno_sapo.gif)
