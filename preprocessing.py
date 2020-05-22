@@ -13,7 +13,7 @@ import urllib
 import urllib.request
 import alignment
 
-MAX_ALIGN_LENGTH = 30000
+MAX_ALIGN_LENGTH = 10000
 
 
 class MedianSample():
@@ -67,32 +67,34 @@ def get_median(samples_list, samples_list_length):
     return pivot
 
 
-def get_samples_of_median_length_by_country(csv_path):
+def get_csv_samples_by_country(csv_path):
     '''Classify data from csv file'''
     country_dict = {}
-
     csv_file = open(csv_path, "r")
     data_reader = csv.DictReader(csv_file)
-
     for row in data_reader:
         if row["Length"] != "" and\
                 row["Accession"] != "" and\
                 row["Release_Date"] != "" and\
                 row["Geo_Location"] != "":
             values_tuples = (row["Accession"],
-                             row["Release_Date"], int(row["Length"]))
+                             row["Release_Date"], 
+                             int(row["Length"]))
             country_name = row["Geo_Location"].split(":")[0]
             if country_name in country_dict.keys():
                 country_dict[country_name].append(values_tuples)
             else:
-                country_dict[country_name] = [
-                    values_tuples]
+                country_dict[country_name] = [values_tuples]
     csv_file.close()
+    return country_dict
+
+def get_samples_of_median_length_by_country(country_dict):
     medians_list = []
     for country in country_dict:
         median_sample = call_get_median(country_dict[country])
-        final_sample = MedianSample(
-            median_sample[0], median_sample[1], country)
+        final_sample = MedianSample(median_sample[0], 
+                                    median_sample[1], 
+                                    country)
         medians_list.append(final_sample)
     return medians_list
 

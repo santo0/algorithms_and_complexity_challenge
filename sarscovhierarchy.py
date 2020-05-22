@@ -16,7 +16,7 @@ import time
 import matplotlib.pyplot as plt
 import alignment
 import random
-from preprocessing import get_samples_of_median_length_by_country, get_fasta_sequences
+from preprocessing import get_samples_of_median_length_by_country, get_fasta_sequences, get_csv_samples_by_country
 from sequence_alignement import get_samples_alignement_matrix
 from classify import create_clustering
 
@@ -34,7 +34,8 @@ def main():
         sys.exit(1)
     csv_path = dir_path + 'sequences.csv'
     start_time = time.time()
-    median_sample_list = get_samples_of_median_length_by_country(csv_path)
+    country_dict = get_csv_samples_by_country(csv_path)
+    median_sample_list = get_samples_of_median_length_by_country(country_dict)
     print("--- %s seconds for preprocessing csv ---" %
           (time.time() - start_time))
     start_time = time.time()
