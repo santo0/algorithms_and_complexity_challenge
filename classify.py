@@ -30,7 +30,6 @@ def create_clustering(points, clusters, score_matrix):
                 new_min = score_matrix[i][point]
                 closest_point = point
         new_clusters[str(closest_point)].append(i)
-    print("New_clusters "+str(new_clusters))
     next_centers = calculate_min_puntuation(new_clusters, score_matrix)
     if all(elem in next_centers for elem in points):
         return new_clusters
