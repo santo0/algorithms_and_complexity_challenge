@@ -26,7 +26,7 @@ def create_clustering(points, clusters, score_matrix):
     for i in range(len(score_matrix)):
         new_min = -1
         for point in points:
-            if  i == point or ((new_min == -1 or new_min > score_matrix[i][point]) and i not in points):
+            if  i == point or new_min == -1 or new_min > score_matrix[i][point]: 
                 new_min = score_matrix[i][point]
                 closest_point = point
         new_clusters[str(closest_point)].append(i)
