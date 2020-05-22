@@ -1,6 +1,6 @@
 # Introducció
 
-Aquesta practica te com a objectiu la creació d'un programa el qual utilitzant una serie de mostres dels Nucleotids relacionades amb el COVID-19 en cada Pais, agafa les mostres representatives de cada Pais, i, sobre aquestes, fa les alineacions i comparacions necessaries per a relacionar-les i agrupar-les per similaritat entre elles.
+Aquesta pràctica té com a objectiu la creació d'un programa, que utilitzant una sèrie de mostres dels Nucleotids relacionades amb el COVID-19 en cada país, agafa les mostres representatives de cada país, i sobre aquestes, fa les alineacions i comparacions necessàries per a relacionar-les i agrupar-les per similaritat entre elles.
 
 # Main
 
@@ -176,29 +176,29 @@ Com es pot comprovar, aquesta grafica s'aproxima al cost teoric "quadratic" menc
 
 Per a la classificació que es van proposar son els següents:
 1. Hierarchical Agglomerative Clustering 
-    + Aquest algoritme crea una estructura en forma d'arbre mitjançant l'agrupament de clusters que contenen elements proxims entre ells.
-    Aixó es farà de la següent manera:
+    + Aquest algoritme crea una estructura en forma d'arbre mitjançant l'agrupament de clústers que contenen elements pròxims entre ells.
+    Això es farà de la següent manera:
         + Primerament es crearà un cluster per cada dada a agrupar.
-        + Seguidament es creara un nou cluster mitjançant l'agrupament de dos clusters proxims entre ells.
-        + Aquest ultim es repetirà fins que ens quedi un unic cluster.
+        + Seguidament es crearà un nou cluster mitjançant l'agrupament de dos clústers pròxims entre ells.
+        + Aquest últim es repetirà fins que ens quedi un únic clúster.
     
-    + Un cop finalitzat es tindra una estructura jerarquica de clusters.
+    + Un cop finalitzat es tindrà una estructura jeràrquica de clústers.
 2. k-medoids
-    + Aquest algoritme te com a objectiu la divisió del set de dades en k clusters que continguin dades les quals, seran properes a una dada establerta com a "Centre" de cada cluster.
+    + Aquest algoritme té com a objectiu la divisió del set de dades en k clusters que continguin dades, que seran properes a una dada establerta com a "Centre" de cada clúster.
     Aquest algoritme tindrà el següent funcionament:
         + Primerament es seleccionen k centres aleatoris.
 
-        + Seguidament es seleccionen els diferents elements que pertanyen a cada cluster basant-se en la distancia amb el centre d'aquest.
+        + Seguidament es seleccionen els diferents elements que pertanyen a cada clúster basant-se en la distància amb el centre d'aquest.
 
-        + Es selecciona nous centres dels diferents clusters basant-se en la suma de cada punt amb la resta.El centre sera el que tingui la suma minima.
+        + Es selecciona nous centres dels diferents clústers basant-se en la suma de cada punt amb la resta. El centre serà el que tingui la suma mínima.
 
-        + Per ultim es repetira el proces a partir del segon pas fins que no tinguem mes canvis de centres.
+        + Per últim es repetirà el procés a partir del segon pas fins que no tinguem més canvis de centres.
     
-    + Un cop finalitzat l'algoritme es disposaran dels diferents clusters amb els seus elements corresponents.
+    + Un cop finalitzat l'algoritme es disposaran dels diferents clústers amb els seus elements corresponents.
 
 En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
 
-1. Ens ha semblat un algorisme amb una facil implementació i una utilitat que concordava correctament amb l'objectiu de la practica.
+1. Ens ha semblat un algorisme amb una fàcil implementació i una utilitat que concordava correctament amb l'objectiu de la pràctica.
 
 ### Pseudocodi de l'algoritme seleccionat
 
@@ -213,12 +213,12 @@ En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
             return clusters(new_centers,new_clusters,values)
 
 ### Anàlisis Teoric
-Per al cost d'aquest algoritme es te el següent problema:
-El pitjor cas es molt complicat de calcular ja que a primera vista no es pot saber quin numero de crides es necessitaran per a estabilitzar els centres.
+Per al cost d'aquest algoritme tenim el següent problema:
+El pitjor cas es molt complicat de calcular ja que a primera vista no es pot saber quin número de crides es necessitaran per a estabilitzar els centres.
 
-Per tant, tal i com s'ha mencionat en les classes de teoria farem la assumpció de que tindrà l'ordre de O(n/k), on 
+Per tant, tal i com s'ha mencionat en les classes de teoria farem la assumpció de que tindrà l'ordre de O(n/k), on
 + n = nombre de mostres.
-+ k = nombre de clusters.
++ k = nombre de clústers.
 
 ### Anàlisis Experimental
 
