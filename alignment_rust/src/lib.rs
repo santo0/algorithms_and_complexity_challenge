@@ -53,15 +53,5 @@ fn compute_matrix(sequence1: &str, sequence2: &str) -> u32 {
             scoring_matrix[i][j] = cmp::min(cmp::min(equal, first_sequence_gap), second_sequence_gap);
         }
     }
-
     return scoring_matrix[width - 1][height - 1] as u32;
-}
-fn min(first_number: usize, second_number: usize, third_number: usize) -> usize {
-    if first_number < second_number && first_number < third_number {
-        return first_number;
-    } else if second_number < third_number {
-        return second_number;
-    } else {
-        return third_number;
-    }
 }
