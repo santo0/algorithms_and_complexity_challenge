@@ -13,7 +13,7 @@ import urllib
 import urllib.request
 import alignment
 
-MAX_ALIGN_LENGTH = 30000
+MAX_ALIGN_LENGTH = 1000
 
 
 class MedianSample():

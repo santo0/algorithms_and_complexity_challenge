@@ -55,11 +55,13 @@ def main():
         if element not in points:
             points.append(element)
             i+=1
-    print(points)
-    clustering=[[0,1,4,7,8,3],[1,0,3,6,5,2],[4,3,0,3,4,3],[7,6,3,0,5,4],[6,5,4,5,0,3],[3,2,3,4,3,0]]
-    resultClusters=create_clustering([1,4],{},clustering)
-    print(resultClusters)
-    
+    clustering_with_geolocalitation = {}
+    resultClusters=create_clustering(points,{},score_matrix)
+    for key in resultClusters.keys():
+        clustering_with_geolocalitation.update({median_sample_list[int(key)].geolocation:[]})
+        for value in resultClusters[key]:
+            clustering_with_geolocalitation[median_sample_list[int(key)].geolocation].append(median_sample_list[value].geolocation)
 
+    print(clustering_with_geolocalitation.items())
 if __name__ == "__main__":
     main()
