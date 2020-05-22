@@ -1,0 +1,1 @@
+/home/xavi_nadal/Projects/algorithms_and_complexity_challenge/alignment_rust/target/release/libalignment_rust.so: /home/xavi_nadal/Projects/algorithms_and_complexity_challenge/alignment_rust/src/lib.rs
