@@ -1,6 +1,6 @@
 # Introducció
 
-Aquí va la introducció
+Aquesta practica te com a objectiu la creació d'un programa el qual utilitzant una serie de mostres dels Nucleotids relacionades amb el COVID-19 en cada Pais, agafa les mostres representatives de cada Pais, i, sobre aquestes, fa les alineacions i comparacions necessaries per a relacionar-les i agrupar-les per similaritat entre elles.
 
 # Main
 
@@ -177,5 +177,48 @@ Com es pot comprovar, aquesta grafica s'aproxima al cost teoric "quadratic" menc
 Per a la classificació que es van proposar son els següents:
 1. Hierarchical Agglomerative Clustering 
     + Aquest algoritme crea una estructura en forma d'arbre mitjançant l'agrupament de clusters que contenen elements proxims entre ells.
-    + 
+    Aixó es farà de la següent manera:
+        + Primerament es crearà un cluster per cada dada a agrupar.
+        + Seguidament es creara un nou cluster mitjançant l'agrupament de dos clusters proxims entre ells.
+        + Aquest ultim es repetirà fins que ens quedi un unic cluster.
+    
+    + Un cop finalitzat es tindra una estructura jerarquica de clusters.
 2. k-medoids
+    + Aquest algoritme te com a objectiu la divisió del set de dades en k clusters que continguin dades les quals, seran properes a una dada establerta com a "Centre" de cada cluster.
+    Aquest algoritme tindrà el següent funcionament:
+        + Primerament es seleccionen k centres aleatoris.
+
+        + Seguidament es seleccionen els diferents elements que pertanyen a cada cluster basant-se en la distancia amb el centre d'aquest.
+
+        + Es selecciona nous centres dels diferents clusters basant-se en la suma de cada punt amb la resta.El centre sera el que tingui la suma minima.
+
+        + Per ultim es repetira el proces a partir del segon pas fins que no tinguem mes canvis de centres.
+    
+    + Un cop finalitzat l'algoritme es disposaran dels diferents clusters amb els seus elements corresponents.
+
+En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
+
+1. Ens ha semblat un algorisme amb una facil implementació i una utilitat que concordava correctament amb l'objectiu de la practica.
+
+### Pseudocodi de l'algoritme seleccionat
+
+    function clusters(centers(Initial:Chosen Randomly), clusters(Initial:[]), values):
+        new_clusters=cluster for each center in centers
+        for element in range from 0 to len(values):
+            add to element to closest center distance new_cluster
+        new_centers=calculate_new_centers of new_clusters
+        if new_centers==centers:
+            return clusters
+        else:
+            return clusters(new_centers,new_clusters,values)
+
+### Anàlisis Teoric
+Per al cost d'aquest algoritme es te el següent problema:
+El pitjor cas es molt complicat de calcular ja que a primera vista no es pot saber quin numero de crides es necessitaran per a estabilitzar els centres.
+
+Per tant, tal i com s'ha mencionat en les classes de teoria farem la assumpció de que tindrà l'ordre de O(n/k), on 
++ n = nombre de mostres.
++ k = nombre de clusters.
+
+### Anàlisis Experimental
+
