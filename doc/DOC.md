@@ -68,8 +68,8 @@ Els arguments acceptats són els següents:
         return medians_list
 
 ### Cost teòric
-
-Cost O(n(m+k)), on
+Cas millor: Sense ninguna linea en el fitxer i per tant O(0)
+Cas pitjor: Cost O(n(m+k)), on
 
 - n = number of lines in csv file,
 - m = number of keys in country_dictionay
@@ -103,6 +103,7 @@ Per aquesta part es va elegir l'algoritme median of medians per a satisfer els r
 
 ### Cost teòric
 
+En aquest cas el millor i pitjor cas sempre seran:
 Cost O(n), on
 
 - n és el nombre d'elements d'un país
