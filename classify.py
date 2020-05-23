@@ -15,11 +15,11 @@ def draw_cluster_map(final_clusters):
     tree = nx.Graph()
     for medoid in final_clusters:
         tree.add_node(medoid)
-        tree.add_edge('Centre', medoid)
+        tree.add_edge('Center', medoid)
         for country in final_clusters[medoid]:
             tree.add_node(country)
             tree.add_edge(medoid, country)
-    nx.draw(tree, with_labels=True, font_size='6')
+    nx.draw(tree, with_labels=True, font_size='8')
     plt.show()
 
 
@@ -72,8 +72,12 @@ def clustering(median_sample_list, score_matrix):
         for value in result_clusters[key]:
             clustering_with_geolocalitation[median_sample_list[key].geolocation].append(
                 median_sample_list[value].geolocation)
+    return clustering_with_geolocalitation
+
+
+def print_clusters(clustering_with_geolocalitation):
+    '''Print all the given clusters'''
     for i, medoid in enumerate(clustering_with_geolocalitation, start=1):
         print('Cluster {} with medoid {}'.format(i, medoid))
         for elem in clustering_with_geolocalitation[medoid]:
             print('\t-> {}'.format(elem))
-    return clustering_with_geolocalitation
