@@ -5,7 +5,9 @@
     Code version: 1.0.0
     Availability: https://github.com/santo0/algorithms_and_complexity_challenge
 '''
+from dec_timer import timer
 
+@timer
 def get_samples_alignment_matrix(samples_list, alignment_language):
     '''Get the matrix of scores of all sample alignments'''
     total_samples = len(samples_list)

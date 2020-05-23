@@ -8,7 +8,7 @@
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
-
+from dec_timer import timer
 
 def draw_cluster_map(final_clusters):
     '''Shows graphical representation of clustering'''
@@ -52,10 +52,9 @@ def create_clustering(points, score_matrix):
     next_centers = calculate_min_puntuation(new_clusters, score_matrix)
     if all(elem in next_centers for elem in points):
         return new_clusters
-
     return create_clustering(next_centers, score_matrix)
 
-
+@timer
 def clustering(median_sample_list, score_matrix):
     '''Does clustering and replaces numbers with country names'''
     points = []
@@ -73,4 +72,8 @@ def clustering(median_sample_list, score_matrix):
         for value in result_clusters[key]:
             clustering_with_geolocalitation[median_sample_list[key].geolocation].append(
                 median_sample_list[value].geolocation)
+    for i, medoid in enumerate(clustering_with_geolocalitation, start=1):
+        print('Cluster {} with medoid {}'.format(i, medoid))
+        for elem in clustering_with_geolocalitation[medoid]:
+            print('\t-> {}'.format(elem))
     return clustering_with_geolocalitation

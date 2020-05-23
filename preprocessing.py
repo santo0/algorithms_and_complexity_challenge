@@ -13,7 +13,7 @@ import urllib
 import urllib.request
 from ctypes import cdll, c_int, c_char_p
 import alignment
-
+from dec_timer import timer
 MAX_ALIGN_LENGTH = 1000
 
 lib = cdll.LoadLibrary("alignment_rust/target/release/libalignment_rust.so")
@@ -77,7 +77,7 @@ def get_median(samples_list, samples_list_length):
         return get_median(high, samples_list_length-k-1)
     return pivot
 
-
+@timer
 def get_csv_samples_by_country(csv_path):
     '''Classify data from csv file'''
     country_dict = {}
@@ -109,10 +109,9 @@ def get_samples_of_median_length_by_country(country_dict):
         medians_list.append(final_sample)
     return medians_list
 
-
+@timer
 def get_fasta_sequences(sample_list, dir_path):
     '''Obtain FASTA sequences from the web'''
-    print("Getting fasta sequences from the web")
     for sample in sample_list:
         fasta_path = dir_path + sample.sample_id + ".fasta"
         if os.path.isfile(fasta_path):
@@ -125,7 +124,6 @@ def get_fasta_sequences(sample_list, dir_path):
                     sample.sample_id)
             try:
                 response = urllib.request.urlopen(url)
-                # es suposa q larxiu donat correspon al id
                 data = response.read().decode('utf-8')
             except urllib.error.HTTPError:
                 print("sample whit id {} doesn't exist".format(sample.sample_id))
@@ -135,4 +133,3 @@ def get_fasta_sequences(sample_list, dir_path):
             f_open.close()
         splitted_data = data.split('\n')
         sample.sequence = ''.join(splitted_data[1:])
-    print("Fasta sequences obtained")
