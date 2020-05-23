@@ -164,7 +164,9 @@ Per a solucionar-lo s'havien proposat les següents accions:
 
 2. Intentar efectuar l'algorisme millorant Python amb llenguatges més ràpids com serien Rust, Haskell, C, C++, etc.
 
-En el nostre cas s'ha decidit efectuar l'algorisme estenent el nostre script de Python amb un programa de C el qual se'n encarregaria de fer l'alineació entre dues seqüències. Aquest canvi redueix el temps d'alineació entre dues seqüències de 29000 caràcters a 3.7 segons aprox. Encara així, per alinear totes les mostres amb tota la resta, l'execució pot arribar a durar fins a 21 minuts. Degut això, es pot reduir la mida de les seqüències alineades, fent així que el temps d'alineació sigui quasi imperceptible.
+En el nostre cas s'ha decidit efectuar l'algorisme extenent el nostre script de Python programes de C i Rust, se n'encarregaria de fer l'alineació entre dues seqüències.
+En el cas de C, aquest canvi redueix el temps d'alineació entre dues seqüències de 29000 caràcters a 3.7 segons aprox. En el cas de Rust, triga 183 segons.
+Encara així, en el cas de C, per alinear totes les mostres amb tota la resta, l'execució pot arribar a durar fins a 21 minuts. Degut això, es redueix la mida de les seqüències alineades, fent que el temps d'alineació sigui quasi imperceptible.
 
 Depenent del sistema de puntuació utilitzat el temps d'execució varia. Nosaltres hem escollit el que creiem que és el sistema de puntuació menys intrusiu en el runtime.
 
@@ -174,8 +176,15 @@ Com hem dit anteriorment, el cost teòric serà O(nm), on
 + m = llargada seqüència 2
 
 ### Anàlisis Experimental
-![Grafica](./Grafica.png)
-Primer de tot s'ha de mencionar que la validesa el gràfic proporcionat també depèn parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat és més qüestionable.
+*Llenguatge C*
+
+![Grafica C](./Grafica.png)
+
+*Llenguatge Rust*
+
+![Grafica Rust](./rust_cost.png)
+
+Primer de tot s'ha de mencionar que la validesa del gràfic proporcionat també depèn parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat és més qüestionable.
 
 Per a capturar les dades s'ha decidit comparar una seqüència amb si mateixa utilitzant diferents llargades.
 
@@ -184,8 +193,8 @@ Com es pot comprovar, aquesta gràfica s'aproxima al cost teòric "quadràtic" m
 
 ### Consideracions
 
-1. Com s'ha mencionat anteriorment si implementàvem l'algoritme directament en python, el temps d'execució era insostenible i, per tant, es va decidir buscar un altre llenguatge que executes el mateix algoritme a una velocitat acceptable.
-Al final s'ha acabat decidint per implementar l'algoritme de dues maneres diferents, en c i en Rust per a veure quina de les dues implementacions és més de pressa i provar els dos idiomes.
+1. Com s'ha mencionat anteriorment si implementàvem l'algoritme directament en python, el temps d'execució era insostenible i, per tant, es va decidir buscar un altre llenguatge que executés el mateix algoritme a una velocitat acceptable.
+Al final s'ha acabat decidint per implementar l'algoritme de dues maneres diferents, en C i en Rust per a veure quina de les dues implementacions és més ràpida i provar els dos llenguatges.
 
 2. Per a la implementació de l'algoritme s'ha acabat decidint utilitzar les següents puntuacions:
 
@@ -193,12 +202,18 @@ Al final s'ha acabat decidint per implementar l'algoritme de dues maneres difere
     + 1 si són diferents
     + 1 penalització de Gap
 
-Aquesta puntuació s'ha elegit, per a donar una distància d'edició valida, el qual, ens facilitarà la creació del "clustering". A més a més tenir aquesta puntuació ens ha millorat el rendiment del programa, ja que en utilitzar valors immediats ens estalviem els accessos a les variables i les creacions d'aquestes.
+Aquesta puntuació s'ha elegit, per a donar una distància d'edició vàlida, el qual ens facilitarà la creació del "clustering". A més a més, tenir aquesta puntuació ens ha millorat el rendiment del programa, ja que en utilitzar valors immediats ens estalviem els accessos a les variables i les creacions d'aquestes.
 3. El raonament anterior ha portat a la decisió de fer unes petites modificacions a l'algoritme:
 + S'ha decidit no crear una matriu de puntuacions, ja que, en tenir les puntuacions fixades, s'ha pogut introduir directament les operacions on tocaven depenent del cas.
-+ A més a més, perquè ens dónes el resultat correcte, s'ha hagut de modificar el mètode de selecció i passar-lo per tant, a, en comptes de buscar el màxim de les opcions, el mínim d'aquestes.
++ A més a més, perquè ens dónes el resultat correcte, s'ha hagut de modificar el mètode de selecció i passar-lo per tant a, en comptes de buscar el màxim de les opcions, el mínim d'aquestes.
 
 ## Classificació
+
+Abans de classificar les seqüències, vam decidir crear un heatmap per a veure la similitud general de totes les mostres.
+
+En aquesta representació, un color més fosc indica major similitud, i com més clar,  més diferent. Aquest fet és degut a que en el sistema de puntuació utilitzat, un valor més baix indica més similtud.
+
+![Heatmap](./heatmap.png)
 
 Per a la classificació que es van proposar són els següents:
 1. Hierarchical Agglomerative Clustering
@@ -238,7 +253,7 @@ En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
         else:
             return clusters(new_centers,new_clusters,values)
 
-### Anàlisis Teoric
+### Anàlisis Teòric
 Per al cost d'aquest algoritme tenim el següent problema:
 El pitjor cas és molt complicat de calcular, ja que a primera vista no es pot saber quin nombre de crides es necessitaran per a estabilitzar els centres.
 

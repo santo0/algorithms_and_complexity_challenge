@@ -53,5 +53,6 @@ fn compute_matrix(sequence1: &str, sequence2: &str) -> u32 {
             scoring_matrix[i][j] = cmp::min(cmp::min(equal, first_sequence_gap), second_sequence_gap);
         }
     }
-    return scoring_matrix[width - 1][height - 1] as u32;
+    let result = scoring_matrix[width - 1][height - 1] - 1;
+    return result as u32;
 }
