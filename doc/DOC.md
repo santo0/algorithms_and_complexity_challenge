@@ -1,18 +1,16 @@
 # Pràctica algorítmica
 
 ### Autors
+
 Guillem Camats Felip, Adrià Juvé Sánchez, Martí La Rosa Ramos, Xavier Nadal Reales
 
 ### Data d'entrega
+
 25 de maig de 2020
 
 ### Professor
+
 Jordi Planes Cid
-
-### Assignatura
-Algrítmica i complexitat
-
-
 
 # Introducció
 
@@ -35,13 +33,9 @@ Aquesta serà la funció principal del programa i tindrà com a objectiu la reco
 
 Els arguments acceptats són els següents:
 
-- -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades.
+- -d "directori" : introdueix la localització del directori que conté el fitxer .csv anomenat sequences.csv i on es descarregaran els fitxers Fasta.
 - -r: Execució del programa utilitzant la implementació en Rust.
 - -g: Mostra la informació resultant dels clústers en format de graf.
-
-
-
-
 
 # Preprocessament
 
@@ -57,7 +51,7 @@ Els arguments acceptats són els següents:
                 values_tuples <- (get Accession,Release_Date and Length data)
                 geo_location <- get Country of row
                 country_dictionary[geo_Location] <- add values_tuples
-    
+
         close file csvfile
         medians_list <- []
         for country in all countries:
@@ -66,8 +60,10 @@ Els arguments acceptats són els següents:
         return medians_list
 
 ### Cost teòric
-Cas millor: Sense ninguna linea en el fitxer i per tant O(0)
-Cas pitjor: Cost O(n(m+k)), on
+
+Suposant que el fiter com a mínim tindrà 1 línia, el cas pitjor i el cas millor seràn el mateix.
+
+Cost O(n(m+k)), on
 
 - n = number of lines in csv file,
 - m = number of keys in country_dictionay
@@ -86,11 +82,11 @@ Per aquesta part es va elegir l'algoritme median of medians per a satisfer els r
             pivot <- median of medians
         else:
             pivot <- recursive get_median(medians, median of medians)
-    
+
         low <- elements lower or equal than pivot
         remove last element from low
         high <- elements higher than pivot
-    
+
         k <- number of elements of low
         if position < k:
             return recursive get_median(low, position)
@@ -118,20 +114,26 @@ A més a més s'ha fixat la mida de les subllistes a 5, la raó d'això és simp
 
     function get_fasta_sequences(sample_list):
         for sample in sample_list:
-            obtain fasta sequence of sample via HTTP
-            if not response:
-                exit
+            if fasta file not exists:
+                save fasta sequence of sample via HTTP in file
+                if not response:
+                    exit
+            read fasta file
             split data by new line
             all subsequences of fasta sequence
             assign fasta sequence to sample
 
 ### Cost teòric
 
-El cost teòric és d'ordre O(n(m+k)) tal que
+Cas millor: Quan ja tenim els fitxers Fasta descarregats, O(n(k+z)).
+
+Cas pitjor:
+El cost teòric és d'ordre O(n(m+k+z)) tal que
 
 - n és el numero de mostres que hi ha a sample_list.
 - m és el temps d'obtenció de la seqüencia via HTTP.
-- k és numero de subseqüències que formen la seqüencia fasta.
+- k és el número de subseqüències que formen la seqüencia fasta.
+- z és el cost de comprovar la existència del fitxer
 
 # Alineament de seqüències
 
@@ -165,13 +167,13 @@ A més a més també s'ha d'afegir una penalització de gap, de cost 1.
 Un cop fet es crearà una matriu amb les respostes parcials de la següent manera:
 
     int F[Longitud A][Longitud B]
-    
+
     for i in range(0,Longitud A):
         F[i][0]=i*penalització de gap
-    
+
     for j in range(0,Longitud B):
         F[0][j]=j*penalització de gap
-    
+
     for i in range(1,Longitud A):
         for j in range(1,Longitud B):
             int Opcio1=F[i-1][j-1]+Cost transformació entre les lletres.
@@ -201,7 +203,7 @@ Encara així, en el cas de C, per alinear totes les mostres amb tota la resta, l
 
 Depenent del sistema de puntuació utilitzat el temps d'execució varia. Nosaltres hem escollit el que creiem que és el sistema de puntuació menys intrusiu en el runtime.
 
-Com hem dit anteriorment, el cost teòric serà O(nm), on
+Com es pot veure, el cost teòric en el cas millor i en el cas pitjor serà O(nm), on
 
 - n = llargada seqüència 1
 - m = llargada seqüència 2
@@ -293,14 +295,12 @@ En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
 ### Anàlisis Teòric
 
 Per al cost d'aquest algoritme tenim el següent problema:
-El pitjor cas és molt complicat de calcular, ja que a primera vista no es pot saber quin nombre de crides es necessitaran per a estabilitzar els centres.
+El pitjor i el millor cas són molt complicats de calcular, ja que a primera vista no es pot saber quin nombre de crides es necessitaran per a estabilitzar els centres.
 
-Per tant, tal com s'ha mencionat en les classes de teoria farem l'assumpció que tindrà l'ordre de O(n/k), on
+Per tant, tal com s'ha mencionat en les classes de teoria farem l'assumpció d' O(n/k), on
 
 - n = nombre de mostres.
 - k = nombre de clústers.
-
-
 
 ### Anàlisis Experimental
 
