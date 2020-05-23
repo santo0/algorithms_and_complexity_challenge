@@ -114,7 +114,7 @@ def get_fasta_sequences(sample_list, dir_path):
     '''Obtain FASTA sequences from the web'''
     for sample in sample_list:
         fasta_path = dir_path + sample.sample_id + ".fasta"
-        if os.path.isfile(fasta_path):
+        if os.path.exists(fasta_path):
             f_open = open(fasta_path)
             data = f_open.read()
             f_open.close()
