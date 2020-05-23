@@ -6,6 +6,12 @@ Guillem Camats Felip, Adrià Juvé Sánchez, Martí La Rosa Ramos, Xavier Nadal 
 ### Data d'entrega
 25 de maig de 2020
 
+### Professor
+Jordi Planes Cid
+
+### Assignatura
+Algrítmica i complexitat
+
 
 
 # Introducció
@@ -30,16 +36,8 @@ Aquesta serà la funció principal del programa i tindrà com a objectiu la reco
 Els arguments acceptats són els següents:
 
 - -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades.
-
 - -r: Execució del programa utilitzant la implementació en Rust.
-
 - -g: Mostra la informació resultant dels clústers en format de graf.
-
-
-
-
-
-
 
 
 
@@ -218,7 +216,7 @@ _Llenguatge Rust_
 
 ![Grafica Rust](./images/rust_cost.png)
 
-Primer de tot s'ha de mencionar que la validesa del gràfic proporcionat també depèn parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat és més qüestionable.
+Primer de tot, s'ha de mencionar que la validesa del gràfic proporcionat també depèn parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat és més qüestionable.
 
 Per a capturar les dades s'ha decidit comparar una seqüència amb si mateixa utilitzant diferents llargades.
 
@@ -301,6 +299,8 @@ Per tant, tal com s'ha mencionat en les classes de teoria farem l'assumpció que
 
 - n = nombre de mostres.
 - k = nombre de clústers.
+
+
 
 ### Anàlisis Experimental
 
