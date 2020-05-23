@@ -10,13 +10,17 @@ Els arguments acceptats són el següents:
 
 + -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades
 
++ -r: Execució del programa utilitzant l'implementació en Rust.
+
++ -g: Mostra l'informació resultant dels clusters en format de Graf(Requereix de Python.version<=Python3.7)
+
 # Preprocessament
 
 ## Tractament de les seqüències del fitxer csv
 
 ### Pseudocodi
 
-    function preprocess(csvpath):
+    function get_samples_of_median_length_by_country(csvpath):
         country_dictionary <- {}
         csvfile <- open file csvpath
         for row in csvfile:
@@ -28,8 +32,7 @@ Els arguments acceptats són el següents:
         close file csvfile  
         medians_list <- []
         for country in all countries:
-            sort country_dictionary[country] by Length data
-            median_sample <- get country data located at the length based median location
+            median_sample <- get country data located at the length based 
             medians_list <- add median sample data
         return medians_list
 
@@ -72,6 +75,12 @@ Vam escollir aquest algoritme per que se’ns va demanar implementar un algorism
 Cost O(n), on 
 + n és el nombre d'elements d'un país
 
+### Consideracions
+
+S'ha modificat parcialment l'algoritme original per aconseguir que es pugui buscar la mediana de llistes amb valors repetits.
+
+A més a més s'ha fixat la mida de les subllistes a 5, la raó d'això és simplement que, segons la informació recol·lectada, això ens aproximarà a l'ordre O(n) desitjat.
+
 ## Obtenció de seqüències Fasta
 
 ### Pseudocodi
@@ -80,7 +89,7 @@ Cost O(n), on
         for sample in sample_list:
             obtain fasta sequence of sample via HTTP
             if not response:
-                ask user if continue or not
+                exit
             split data by new line
             all subsequences of fasta sequence
             assign fasta sequence to sample
@@ -172,28 +181,45 @@ Per a capturar les dades s'ha decidit comparar una seqüencia amb si mateixa uti
 
 Com es pot comprovar, aquesta grafica s'aproxima al cost teoric "quadratic" mencionat anteriorment.
 
+
+### Consideracions
+
+1. Com s'ha mencionat anteriorment si implementàvem l'algoritme directament en python, el temps d'execució era insostenible i, per tant, es va decidir buscar un altre llenguatge que executes el mateix algoritme a una velocitat acceptable.
+Al final s'ha acabat decidint per implementar l'algoritme de dues maneres diferents, en c i en Rust per a veure quina de les dues implementacions és més de pressa i provar els dos idiomes.
+
+2. Per a la implementació de l'algoritme s'ha acabat decidint utilitzar les següents puntuacions:
+
+    + 0 si els caràcters són iguals
+    + 1 si són diferents
+    + 1 penalització de Gap
+
+Aquesta puntuació s'ha elegit, per a donar una distància d'edició valida, el qual, ens facilitarà la creació del "clustering". A més a més tenir aquesta puntuació ens ha millorat el rendiment del programa, ja que en utilitzar valors immediats ens estalviem els accessos a les variables i les creacions d'aquestes.
+3. El raonament anterior ha portat a la decisió de fer unes petites modificacions a l'algoritme:
++ S'ha decidit no crear una matriu de puntuacions, ja que, en tenir les puntuacions fixades, s'ha pogut introduir directament les operacions on tocaven depenent del cas.
++ A més a més, perquè ens dónes el resultat correcte, s'ha hagut de modificar el mètode de selecció i passar-lo per tant, a, en comptes de buscar el màxim de les opcions, el mínim d'aquestes.
+
 ## Classificació
 
-Per a la classificació que es van proposar son els següents:
-1. Hierarchical Agglomerative Clustering 
+Per a la classificació que es van proposar són els següents:
+1. Hierarchical Agglomerative Clustering
     + Aquest algoritme crea una estructura en forma d'arbre mitjançant l'agrupament de clústers que contenen elements pròxims entre ells.
     Això es farà de la següent manera:
-        + Primerament es crearà un cluster per cada dada a agrupar.
-        + Seguidament es crearà un nou cluster mitjançant l'agrupament de dos clústers pròxims entre ells.
-        + Aquest últim es repetirà fins que ens quedi un únic clúster.
-    
+    + Primerament es crearà un cluster per cada dada a agrupar.
+    + Seguidament es crearà un nou cluster mitjançant l'agrupament de dos clústers pròxims entre ells.
+    + Aquest últim es repetirà fins que ens quedi un únic clúster.
+
     + Un cop finalitzat es tindrà una estructura jeràrquica de clústers.
 2. k-medoids
     + Aquest algoritme té com a objectiu la divisió del set de dades en k clusters que continguin dades, que seran properes a una dada establerta com a "Centre" de cada clúster.
     Aquest algoritme tindrà el següent funcionament:
-        + Primerament es seleccionen k centres aleatoris.
+    + Primerament se seleccionen k centres aleatoris.
 
-        + Seguidament es seleccionen els diferents elements que pertanyen a cada clúster basant-se en la distància amb el centre d'aquest.
+    + Seguidament se seleccionen els diferents elements que pertanyen a cada clúster basant-se en la distància amb el centre d'aquest.
 
-        + Es selecciona nous centres dels diferents clústers basant-se en la suma de cada punt amb la resta. El centre serà el que tingui la suma mínima.
+    + Se selecciona nous centres dels diferents clústers basant-se en la suma de cada punt amb la resta. El centre serà el que tingui la suma mínima.
 
-        + Per últim es repetirà el procés a partir del segon pas fins que no tinguem més canvis de centres.
-    
+    + Per últim es repetirà el procés a partir del segon pas fins que no tinguem més canvis de centres.
+
     + Un cop finalitzat l'algoritme es disposaran dels diferents clústers amb els seus elements corresponents.
 
 En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
@@ -222,3 +248,22 @@ Per tant, tal i com s'ha mencionat en les classes de teoria farem la assumpció 
 
 ### Anàlisis Experimental
 
+![Grafica](./clusterGrafica.png)
+
+De nou, ens agradaria mencionar que aquest rendiment també dependrà de l'estat de la màquina en la qual s'ha executat el programa de creació, i, per tant, la seva precisió no és del tot perfecta.
+
+Dit això, es pot veure perfectament com l'aproximació efectuada a classe és bastant certa, ja que el pitjor dels casos és quan volem crear 1 sol cluster el qual ens obligarà a fer tant la selecció de clusters com la creació dels nous centres sobre totes les dades.
+
+### Consideracions
+
+Per aquest algoritme s'ha decidit seguir la implementació especificada en el fòrum de l'assignatura i, per tant, difereix una mica de les explicacions del mètode que es poden trobar normalment.
+
+
+
+## Conclusions
+
+Aquesta pràctica ha servit per a veure molts algoritmes diferents que utilitzen les metodologies especificades durant les classes, com, per exemple: Programació dinàmica, Divideix i Venç, etc.
+
+Un cop dit això, un petit efecte secundari de la pràctica ha sigut aprendre molt en qüestió de com millorar la velocitat de certs llenguatges mitjançant l'extensió d'aquests amb llenguatges més ràpids.
+
+A més a més, s'hi han après tècniques que, permet millorar encara mes la velocitat, com per exemple utilització d'immediats, tipus de dades, etc..
