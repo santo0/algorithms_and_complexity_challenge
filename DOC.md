@@ -1,18 +1,18 @@
 # Introducció
 
-Aquesta pràctica té com a objectiu la creació d'un programa, que utilitzant una sèrie de mostres dels Nucleotids relacionades amb el COVID-19 en cada país, agafa les mostres representatives de cada país, i sobre aquestes, fa les alineacions i comparacions necessàries per a relacionar-les i agrupar-les per similaritat entre elles.
+Aquesta pràctica té com a objectiu la creació d'un programa, que utilitzant una sèrie de mostres dels Nucleòtids relacionades amb el COVID-19 en cada país, agafa les mostres representatives de cada país, i sobre aquestes, fa les alineacions i comparacions necessàries per a relacionar-les i agrupar-les per similaritat entre elles.
 
 # Main
 
-Aquesta serà la funció principal del programa i tindrà com a objectiu la recollida d'arguments i la execució de la funcionalitat principal.
+Aquesta serà la funció principal del programa i tindrà com a objectiu la recollida d'arguments i l'execució de la funcionalitat principal.
 
-Els arguments acceptats són el següents:
+Els arguments acceptats són els següents:
 
 + -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades
 
-+ -r: Execució del programa utilitzant l'implementació en Rust.
++ -r: Execució del programa utilitzant la implementació en Rust.
 
-+ -g: Mostra l'informació resultant dels clusters en format de Graf(Requereix de Python.version<=Python3.7)
++ -g: Mostra l'informació resultant dels clústers en format de Graf(Requereix de Python.version<=Python3.7)
 
 # Preprocessament
 
@@ -46,7 +46,7 @@ Cost O(n(m+k)), on
 
 ## Obtenció de la mostra de longitud mediana d’un país 
 
-Vam escollir aquest algoritme per que se’ns va demanar implementar un algorisme de càlcul de mediana utilitzant dividir i vèncer i vam veure que aquest complia els requisits.
+Vam escollir aquest algoritme perquè se'ns va demanar implementar un algorisme de càlcul de mediana utilitzant dividir i vèncer i vam veure que aquest complia els requisits.
 
 ### Pseudocodi
 
@@ -127,7 +127,7 @@ En el nostre cas s'ha elegit l'algorisme de Needleman-Wunsch per les següents r
 
 ### Pseudocodi de l'algorisme seleccionat
 
-Primerament s'ha de mencionar que teoricament l'algorisme s'inicia amb una matriu amb els costs de totes les transformacions possibles amb les dades de la seqüència, però nosaltres hem utilitzat uns costos tal que no necessitem d’aquesta matriu. Si no s’ha de fer cap transofrmació, llavors el cost és 0, si n’ha de fer una, llavors el cost puja a 1.
+Primerament s'ha de mencionar que teòricament l'algorisme s'inicia amb una matriu amb els costs de totes les transformacions possibles amb les dades de la seqüència, però nosaltres hem utilitzat uns costos tal que no necessitem aquesta matriu. Si no s'ha de fer cap transformació, llavors el cost és 0, si n'ha de fer una, llavors el cost puja a 1.
 
 A més a més també s'ha d'afegir una penalització de gap.
 
@@ -164,9 +164,9 @@ Per a solucionar-lo s'havien proposat les següents accions:
 
 2. Intentar efectuar l'algorisme millorant Python amb llenguatges més ràpids com serien Rust, Haskell, C, C++, etc.
 
-En el nostre cas s'ha decidit efectuar l’algorisme estenent el nostre script de Python amb un programa de C el qual s’en encarregaria de fer l’alineació entre dos seqüències. Aquest canvi redueix el temps d’alineació entre dos seqüències de 29000 caràcters a 3.7 segons aprox. Encara així, per alinear totes les mostres amb tota la resta, l’execució pot arribar a durar fins a 21 minuts. Degut això, es pot reduir la mida de les seqüències alineades, fent així que el temps d’alineació sigui casi imperceptible.
+En el nostre cas s'ha decidit efectuar l'algorisme estenent el nostre script de Python amb un programa de C el qual se'n encarregaria de fer l'alineació entre dues seqüències. Aquest canvi redueix el temps d'alineació entre dues seqüències de 29000 caràcters a 3.7 segons aprox. Encara així, per alinear totes les mostres amb tota la resta, l'execució pot arribar a durar fins a 21 minuts. Degut això, es pot reduir la mida de les seqüències alineades, fent així que el temps d'alineació sigui quasi imperceptible.
 
-Depenent del sistema de puntuació utilitzat el temps d’execució varia. Nosaltres hem escollit el que creiem que és el sistema de puntuació menys intrusiu en el runtime.
+Depenent del sistema de puntuació utilitzat el temps d'execució varia. Nosaltres hem escollit el que creiem que és el sistema de puntuació menys intrusiu en el runtime.
 
 Com hem dit anteriorment, el cost teòric serà O(nm), on
 
@@ -175,11 +175,11 @@ Com hem dit anteriorment, el cost teòric serà O(nm), on
 
 ### Anàlisis Experimental
 ![Grafica](./Grafica.png)
-Primer de tot s'ha de mencionar que la validesa el grafic proporcionat també depen parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat es mes qüestionable.
+Primer de tot s'ha de mencionar que la validesa el gràfic proporcionat també depèn parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat és més qüestionable.
 
-Per a capturar les dades s'ha decidit comparar una seqüencia amb si mateixa utilitzant diferentes llargades.
+Per a capturar les dades s'ha decidit comparar una seqüència amb si mateixa utilitzant diferents llargades.
 
-Com es pot comprovar, aquesta grafica s'aproxima al cost teoric "quadratic" mencionat anteriorment.
+Com es pot comprovar, aquesta gràfica s'aproxima al cost teòric "quadràtic" mencionat anteriorment.
 
 
 ### Consideracions
@@ -206,7 +206,7 @@ Per a la classificació que es van proposar són els següents:
     Això es farà de la següent manera:
     + Primerament es crearà un cluster per cada dada a agrupar.
     + Seguidament es crearà un nou cluster mitjançant l'agrupament de dos clústers pròxims entre ells.
-    + Aquest últim es repetirà fins que ens quedi un únic clúster.
+    + Aquest últim es repetirà fins que ens quedi un únic cluster.
 
     + Un cop finalitzat es tindrà una estructura jeràrquica de clústers.
 2. k-medoids
@@ -240,9 +240,9 @@ En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
 
 ### Anàlisis Teoric
 Per al cost d'aquest algoritme tenim el següent problema:
-El pitjor cas es molt complicat de calcular ja que a primera vista no es pot saber quin número de crides es necessitaran per a estabilitzar els centres.
+El pitjor cas és molt complicat de calcular, ja que a primera vista no es pot saber quin nombre de crides es necessitaran per a estabilitzar els centres.
 
-Per tant, tal i com s'ha mencionat en les classes de teoria farem la assumpció de que tindrà l'ordre de O(n/k), on
+Per tant, tal com s'ha mencionat en les classes de teoria farem l'assumpció que tindrà l'ordre de O(n/k), on
 + n = nombre de mostres.
 + k = nombre de clústers.
 
@@ -266,4 +266,4 @@ Aquesta pràctica ha servit per a veure molts algoritmes diferents que utilitzen
 
 Un cop dit això, un petit efecte secundari de la pràctica ha sigut aprendre molt en qüestió de com millorar la velocitat de certs llenguatges mitjançant l'extensió d'aquests amb llenguatges més ràpids.
 
-A més a més, s'hi han après tècniques que, permet millorar encara mes la velocitat, com per exemple utilització d'immediats, tipus de dades, etc..
+A més a més, s'hi han après tècniques que, permet millorar encara mes la velocitat, com per exemple utilització d'immediats, tipus de dades, etc...
