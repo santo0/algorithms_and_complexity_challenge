@@ -36,8 +36,8 @@ Els arguments acceptats són els següents:
         for row in csvfile:
             if all necessary data is not empty:
                 values_tuples <- (get Accession,Release_Date and Length data)
-                Geo_location <- get Country of row
-                country_dictionary[Geo_Location] <- add values_tuples
+                geo_location <- get Country of row
+                country_dictionary[geo_Location] <- add values_tuples
 
         close file csvfile  
         medians_list <- []
@@ -56,7 +56,7 @@ Cost O(n(m+k)), on
 
 ## Obtenció de la mostra de longitud mediana d’un país 
 
-Vam escollir aquest algoritme perquè se'ns va demanar implementar un algorisme de càlcul de mediana utilitzant dividir i vèncer i vam veure que aquest complia els requisits.
+Per aquesta part es va elegir l'algoritme median of medians per a satisfer els requisits de la pràctica, on es demanava efectuar l'algoritme de divideix i venç.
 
 ### Pseudocodi
 
@@ -120,10 +120,10 @@ Pel que fa a l'alineament de seqüències s'han trobat els següents algorismes:
 
 1. Algorisme de Needleman-Wunsch
     + Aquest algorisme utilitza programació dinàmica per a buscar un alineament "global" entre dues seqüències.
-    Aquest algorisme utilitza ordre O(nm), ja que crea una matriu per a emmagatzemar les puntuacions dels diferents possibles alineaments a efectuar, i en finalitzar trobarà l'alineament òptim.
+    Aquest algorisme utilitza ordre O(nm), ja que crea una matriu per a emmagatzemar les puntuacions dels diferents possibles alineaments a efectuar i, en finalitzar, trobarà l'alineament òptim.
 2. Algorisme de Smith-Waterman
     + Aquest algorisme utilitza una versió similar al de Needleman-Wunsch però aquest té com a objectiu buscar un alineament "local" entre dues seqüències.
-    De totes maneres l'ordre serà de O(nm) per la mateixa raó que el mètode de Needleman-Wunsch, l'única diferència serà en el moment d'efectuar l'alineació un cop es té la matriu de les puntuacions parcials, on es començarà el procés des d'una posició diferent.
+    De totes maneres l'ordre serà d' O(nm) per la mateixa raó que el mètode de Needleman-Wunsch, l'única diferència serà en el moment d'efectuar l'alineació un cop es té la matriu de les puntuacions parcials, on es començarà el procés des d'una posició diferent.
 3. Algorisme de Hirschberg
     + Aquest algorisme també és una modificació basada en l'algorisme de Needleman-Wunsch, encara que manté l'ordre d'O(nm), millora la utilització de l'espai per part de les matrius.
 
@@ -137,9 +137,9 @@ En el nostre cas s'ha elegit l'algorisme de Needleman-Wunsch per les següents r
 
 ### Pseudocodi de l'algorisme seleccionat
 
-Primerament s'ha de mencionar que teòricament l'algorisme s'inicia amb una matriu amb els costs de totes les transformacions possibles amb les dades de la seqüència, però nosaltres hem utilitzat uns costos tal que no necessitem aquesta matriu. Si no s'ha de fer cap transformació, llavors el cost és 0, si n'ha de fer una, llavors el cost puja a 1.
+Primerament s'ha de mencionar que teòricament l'algorisme s'inicia amb una matriu amb els costs de totes les transformacions possibles amb les dades de la seqüència, però nosaltres hem utilitzat uns costos tal que no necessitem aquesta matriu. Si no s'ha de fer cap transformació, llavors el cost és 0, si se n'ha de fer una, llavors el cost puja a 1.
 
-A més a més també s'ha d'afegir una penalització de gap.
+A més a més també s'ha d'afegir una penalització de gap, de cost 1.
 
 Un cop fet es crearà una matriu amb les respostes parcials de la següent manera:
 
@@ -158,7 +158,7 @@ Un cop fet es crearà una matriu amb les respostes parcials de la següent maner
             int Opcio3=F[i][j-1]+penalització de gap
         F[i][j]=max(Opcio1,Opcio2,Opcio3)
 
-Un cop tenim la matriu, la puntuació de similitud de la millor alineació serà la puntuació que es troba en la posició F[longitudA][longitudB].
+Un cop tenim la matriu, la distància d'edició serà la puntuació que es troba en la posició F[longitudA][longitudB].
 
 També existeix una segona part de l'algorisme que tindria com a objectiu crear dos strings assenyalant com quedarien els strings un cop efectuada l'alineació òptima.  Com que en el nostre cas únicament volem saber la puntuació de l'alineament, aquesta segona part no l'hem efectuat.
 
@@ -188,11 +188,11 @@ Com hem dit anteriorment, el cost teòric serà O(nm), on
 ### Anàlisis Experimental
 *Llenguatge C*
 
-![Grafica C](./Grafica.png)
+![Grafica C](./images/Grafica.png)
 
 *Llenguatge Rust*
 
-![Grafica Rust](./rust_cost.png)
+![Grafica Rust](./images/rust_cost.png)
 
 Primer de tot s'ha de mencionar que la validesa del gràfic proporcionat també depèn parcialment de la situació de l'ordinador en el moment de la seva creació i per tant, la seva veracitat és més qüestionable.
 
@@ -223,7 +223,7 @@ Abans de classificar les seqüències, vam decidir crear un heatmap per a veure 
 
 En aquesta representació, un color més fosc indica major similitud, i com més clar,  més diferent. Aquest fet és degut a que en el sistema de puntuació utilitzat, un valor més baix indica més similtud.
 
-![Heatmap](./heatmap.png)
+![Heatmap](./images/heatmap.png)
 
 Per a la classificació que es van proposar són els següents:
 1. Hierarchical Agglomerative Clustering
@@ -245,7 +245,7 @@ Per a la classificació que es van proposar són els següents:
 
     + Per últim es repetirà el procés a partir del segon pas fins que no tinguem més canvis de centres.
 
-    + Un cop finalitzat l'algoritme es disposaran dels diferents clústers amb els seus elements corresponents.
+    + Un cop finalitzat l'algoritme es disposarà dels diferents clústers amb els seus elements corresponents.
 
 En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
 
@@ -253,15 +253,15 @@ En el nostre cas s'ha elegit l'algoritme de k-medoids per la següent raó:
 
 ### Pseudocodi de l'algoritme seleccionat
 
-    function clusters(centers(Initial:Chosen Randomly), clusters(Initial:[]), values):
-        new_clusters=cluster for each center in centers
+    function clusters(centers(Initial:Chosen Randomly), values):
+        new_clusters = cluster for each center in centers
         for element in range from 0 to len(values):
             add to element to closest center distance new_cluster
-        new_centers=calculate_new_centers of new_clusters
-        if new_centers==centers:
+        new_centers = calculate_new_centers of new_clusters
+        if new_centers == centers:
             return clusters
         else:
-            return clusters(new_centers,new_clusters,values)
+            return clusters(new_centers, values)
 
 ### Anàlisis Teòric
 Per al cost d'aquest algoritme tenim el següent problema:
@@ -273,22 +273,24 @@ Per tant, tal com s'ha mencionat en les classes de teoria farem l'assumpció que
 
 ### Anàlisis Experimental
 
-![Grafica](./clusterGrafica.png)
+![Grafica](./images/clusterGrafica.png)
 
 De nou, ens agradaria mencionar que aquest rendiment també dependrà de l'estat de la màquina en la qual s'ha executat el programa de creació, i, per tant, la seva precisió no és del tot perfecta.
 
-Dit això, es pot veure perfectament com l'aproximació efectuada a classe és bastant certa, ja que el pitjor dels casos és quan volem crear 1 sol cluster el qual ens obligarà a fer tant la selecció de clusters com la creació dels nous centres sobre totes les dades.
+Dit això, es pot veure perfectament com l'aproximació efectuada a classe és bastant certa, ja que el pitjor dels casos és quan volem crear un sol clúster el qual ens obligarà a fer tant la selecció de clústers com la creació dels nous centres sobre totes les dades.
 
 ### Consideracions
 
 Per aquest algoritme s'ha decidit seguir la implementació especificada en el fòrum de l'assignatura i, per tant, difereix una mica de les explicacions del mètode que es poden trobar normalment.
 
-
-
 ## Conclusions
 
-Aquesta pràctica ha servit per a veure molts algoritmes diferents que utilitzen les metodologies especificades durant les classes, com, per exemple: Programació dinàmica, Divideix i Venç, etc.
+Primer de tot, ens sembla una proposta original i el fet de treballar amb una situació real com es tracta de la crisis generada pel virus SARS-CoV-2, li aporta un interès especial.
 
-Un cop dit això, un petit efecte secundari de la pràctica ha sigut aprendre molt en qüestió de com millorar la velocitat de certs llenguatges mitjançant l'extensió d'aquests amb llenguatges més ràpids.
+Aquesta pràctica ha estat molt útil per a veure molts algoritmes diferents que utilitzen les metodologies especificades durant les classes com per exemple: Programació dinàmica, Divideix i Venç, etc.
 
-A més a més, s'hi han après tècniques que, permet millorar encara mes la velocitat, com per exemple utilització d'immediats, tipus de dades, etc...
+També valorem molt el coneixement obtingut de la pràctica sobre com millorar la velocitat de les implementacions mitjançant la combinació de diferents llenguatges.
+
+A més a més, s'han après tècniques que permeten millorar encara més la velocitat, com l'utilització d'immediats, tipus de dades, entre altres.
+
+Per últim, també hem treballat amb la representació gràfica d'un conjunt de dades, com heatmap, arbres i gràfiques.
