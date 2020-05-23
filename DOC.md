@@ -1,6 +1,15 @@
 # Introducció
 
-Aquesta pràctica té com a objectiu la creació d'un programa, que utilitzant una sèrie de mostres dels Nucleòtids relacionades amb el COVID-19 en cada país, agafa les mostres representatives de cada país, i sobre aquestes, fa les alineacions i comparacions necessàries per a relacionar-les i agrupar-les per similaritat entre elles.
+Aquesta pràctica té com a objectiu analitzar i comparar diferents mostres de Nucleòtids relacionades amb el SARS-CoV-2. Per començar, s'elegeix una mostra representativa de cada país. Aquestes, les comparem, puntuem i agrupem, bastant-nos en la seva similitud. Opcionalment, es mostra la representació gràfica d'aquesta representació.
+
+# Requisits
+Per a executar el nostre programa es necessitaran les següents llibreries:
++ networkx
++ matplotlib
+
+Tot i que no és necessari per a executar el programa,
+s'ha creat un fitxer Makefile per a compilat els mòduls de C.
+Per a compilar el codi en Rust: $cd alignment_rust, $cargo build --release
 
 # Main
 
@@ -8,15 +17,12 @@ Aquesta serà la funció principal del programa i tindrà com a objectiu la reco
 
 Els arguments acceptats són els següents:
 
-+ -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades
++ -c "fitxer" : introdueix la localització del fitxer .csv que conté les mostres de les dades.
 
 + -r: Execució del programa utilitzant la implementació en Rust.
 
-+ -g: Mostra l'informació resultant dels clústers en format de Graf
++ -g: Mostra la informació resultant dels clústers en format de graf.
 
-Per a executar el nostre programa es necessitaran les següents llibreries:
-+ networkx
-+ matplotlib
 
 # Preprocessament
 
