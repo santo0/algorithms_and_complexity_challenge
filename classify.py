@@ -1,6 +1,6 @@
 '''
     Title: classify.py
-    Author: Guillem Camats Felip, Adrià Juvé Sánchez, Martí La Rosa Ramos, Xavier Nadal Reales
+    Author: Guillem Camats Felip, Adria Juve Sanchez, Marti La Rosa Ramos, Xavier Nadal Reales
     Date: 25-5-2020
     Code version: 1.0.0
     Availability: https://github.com/santo0/algorithms_and_complexity_challenge
@@ -42,8 +42,7 @@ def calculate_min_puntuation(new_cluster, score_matrix):
 def create_clustering(points, score_matrix):
     '''Creates clustering'''
     new_clusters = {point : [] for point in points}
-    print(points,'eeeeeeeeeeeeeeee')
-    for i in range(len(score_matrix)):
+    for i, _ in enumerate(score_matrix):
         new_min = -1
         for point in points:
             if i == point or new_min == -1 or new_min > score_matrix[i][point]:
