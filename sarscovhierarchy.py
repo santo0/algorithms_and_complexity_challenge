@@ -9,11 +9,9 @@ import sys
 import argparse
 import os.path
 import time
-import matplotlib.pyplot as plt
-import networkx as nx
 from preprocessing import get_csv_samples_by_country, get_samples_of_median_length_by_country, get_fasta_sequences
 from sequence_alignment import get_samples_alignment_matrix
-from classify import clustering
+from classify import clustering, draw_cluster_map
 
 def main():
     '''Get arguments and calls main functions'''
@@ -52,20 +50,6 @@ def main():
           (time.time() - start_time))
     final_clusters = clustering(median_sample_list, score_matrix)
     draw_cluster_map(final_clusters)
-
-
-def draw_cluster_map(final_clusters):
-    '''Shows graphical representation of clustering'''
-    tree = nx.Graph()
-    for medoid in final_clusters:
-        tree.add_node(medoid)
-        tree.add_edge('Centre', medoid)
-        for country in final_clusters[medoid]:
-            tree.add_node(country)
-            tree.add_edge(medoid, country)
-    nx.draw(tree, with_labels=True, font_size='6')
-    plt.show()
-
 
 if __name__ == "__main__":
     main()

@@ -6,6 +6,21 @@
     Availability: https://github.com/santo0/algorithms_and_complexity_challenge
 '''
 import random
+import networkx as nx
+import matplotlib.pyplot as plt
+
+
+def draw_cluster_map(final_clusters):
+    '''Shows graphical representation of clustering'''
+    tree = nx.Graph()
+    for medoid in final_clusters:
+        tree.add_node(medoid)
+        tree.add_edge('Centre', medoid)
+        for country in final_clusters[medoid]:
+            tree.add_node(country)
+            tree.add_edge(medoid, country)
+    nx.draw(tree, with_labels=True, font_size='6')
+    plt.show()
 
 
 def calculate_min_puntuation(new_cluster, score_matrix):
