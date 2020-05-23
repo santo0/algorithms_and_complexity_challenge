@@ -12,7 +12,11 @@ Els arguments acceptats són els següents:
 
 + -r: Execució del programa utilitzant la implementació en Rust.
 
-+ -g: Mostra l'informació resultant dels clústers en format de Graf(Requereix de Python.version<=Python3.7)
++ -g: Mostra l'informació resultant dels clústers en format de Graf
+
+Per a executar el nostre programa es necessitaran les següents llibreries:
++ networkx
++ matplotlib
 
 # Preprocessament
 
