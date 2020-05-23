@@ -8,10 +8,13 @@
 import sys
 import argparse
 import os.path
-import time
-from preprocessing import get_csv_samples_by_country, get_samples_of_median_length_by_country, get_fasta_sequences
+from preprocessing import get_csv_samples_by_country,\
+                          get_samples_of_median_length_by_country,\
+                          get_fasta_sequences
 from sequence_alignment import get_samples_alignment_matrix
-from classify import clustering, draw_cluster_map
+from classify import clustering,\
+                     draw_cluster_map,\
+                     print_clusters
 
 def main():
     '''Get arguments and calls main functions'''
@@ -41,10 +44,9 @@ def main():
     else:
         score_matrix = get_samples_alignment_matrix(median_sample_list, False)
     final_clusters = clustering(median_sample_list, score_matrix)
+    print_clusters(final_clusters)
     if graph_activated:
         draw_cluster_map(final_clusters)
-
-
 
 
 if __name__ == "__main__":

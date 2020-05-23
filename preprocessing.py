@@ -1,6 +1,6 @@
 '''
     Title: preprocessing.py
-    Author: Guillem Camats Felip, Adrià Juvé Sánchez, Martí La Rosa Ramos, Xavier Nadal Reales
+    Author: Guillem Camats Felip, Adria Juve Sanchez, Marti La Rosa Ramos, Xavier Nadal Reales
     Date: 25-5-2020
     Code version: 1.0.0
     Availability: https://github.com/santo0/algorithms_and_complexity_challenge
@@ -15,10 +15,9 @@ from ctypes import cdll, c_int, c_char_p
 import alignment
 from dec_timer import timer
 MAX_ALIGN_LENGTH = 1000
-
-lib = cdll.LoadLibrary("alignment_rust/target/release/libalignment_rust.so")
-lib.alignment.argtypes = (c_char_p, c_char_p)
-lib.alignment.restype = c_int
+LIB = cdll.LoadLibrary("alignment_rust/target/release/libalignment_rust.so")
+LIB.alignment.argtypes = (c_char_p, c_char_p)
+LIB.alignment.restype = c_int
 
 class MedianSample():
     '''Sample of median length of a country'''
@@ -44,7 +43,7 @@ class MedianSample():
         '''Sets maximum length of sequence and returns algorithm score, in Rust'''
         seq_1 = self.sequence[:MAX_ALIGN_LENGTH].encode()
         seq_2 = other_sample.sequence[:MAX_ALIGN_LENGTH].encode()
-        max_score = lib.alignment(seq_1, seq_2)
+        max_score = LIB.alignment(seq_1, seq_2)
         return max_score
 
     def __repr__(self):
@@ -89,7 +88,7 @@ def get_csv_samples_by_country(csv_path):
                 row["Release_Date"] != "" and\
                 row["Geo_Location"] != "":
             values_tuples = (row["Accession"],
-                             row["Release_Date"], 
+                             row["Release_Date"],
                              int(row["Length"]))
             country_name = row["Geo_Location"].split(":")[0]
             if country_name in country_dict.keys():
@@ -100,11 +99,12 @@ def get_csv_samples_by_country(csv_path):
     return country_dict
 
 def get_samples_of_median_length_by_country(country_dict):
+    '''Get the sample with median length for all the countries in the dictionary'''
     medians_list = []
     for country in country_dict:
         median_sample = call_get_median(country_dict[country])
-        final_sample = MedianSample(median_sample[0], 
-                                    median_sample[1], 
+        final_sample = MedianSample(median_sample[0],
+                                    median_sample[1],
                                     country)
         medians_list.append(final_sample)
     return medians_list
