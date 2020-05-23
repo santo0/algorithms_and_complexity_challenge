@@ -11,10 +11,14 @@ import csv
 from operator import itemgetter
 import urllib
 import urllib.request
+from ctypes import cdll, c_int, c_char_p
 import alignment
 
-MAX_ALIGN_LENGTH = 10000
+MAX_ALIGN_LENGTH = 1000
 
+lib = cdll.LoadLibrary("alignment_rust/target/release/libalignment_rust.so")
+lib.alignment.argtypes = (c_char_p, c_char_p)
+lib.alignment.restype = c_int
 
 class MedianSample():
     '''Sample of median length of a country'''
@@ -30,10 +34,17 @@ class MedianSample():
         self.sequence = fasta_sequence
 
     def align_sequence(self, other_sample):
-        '''Sets maximum length of sequence'''
+        '''Sets maximum length of sequence and returns algorithm score'''
         seq_1 = self.sequence[:MAX_ALIGN_LENGTH]
         seq_2 = other_sample.sequence[:MAX_ALIGN_LENGTH]
         max_score = alignment.alignment(seq_1, seq_2)
+        return max_score
+
+    def align_sequence_rust(self, other_sample):
+        '''Sets maximum length of sequence and returns algorithm score, in Rust'''
+        seq_1 = self.sequence[:MAX_ALIGN_LENGTH].encode()
+        seq_2 = other_sample.sequence[:MAX_ALIGN_LENGTH].encode()
+        max_score = lib.alignment(seq_1, seq_2)
         return max_score
 
     def __repr__(self):

@@ -8,17 +8,12 @@
 import sys
 import argparse
 import os.path
-import csv
-from operator import itemgetter
-import urllib
-import urllib.request
 import time
 import matplotlib.pyplot as plt
-import alignment
-import random
-from preprocessing import get_samples_of_median_length_by_country, get_fasta_sequences, get_csv_samples_by_country
-from sequence_alignement import get_samples_alignement_matrix
-from classify import create_clustering
+import networkx as nx
+from preprocessing import get_samples_of_median_length_by_country, get_fasta_sequences
+from sequence_alignment import get_samples_alignment_matrix
+from classify import clustering
 
 def main():
     '''Get arguments and calls main functions'''
@@ -26,8 +21,12 @@ def main():
     parser.add_argument('-d', '--dir',
                         dest='dir',
                         default='',
-                        help='relative path of directory of csv and fasta.\n'+\
+                        help='relative path of directory of csv and fasta.\n' +
                         'Exemple: ./sarscovhierarchy.py -d data_set/ ')
+    parser.add_argument('-r', '--rust', action='store_true',
+                        default=False, help='Activate rust algorithm (not recommended)')
+    rust_activated = parser.parse_args().rust
+
     args = parser.parse_args()
     dir_path = args.dir
     if not os.path.isdir(dir_path):
@@ -44,23 +43,29 @@ def main():
     print(len(median_sample_list))
     print('Start score matrix')
     start_time = time.time()
-    score_matrix = get_samples_alignement_matrix(median_sample_list)
+    if not rust_activated:
+        score_matrix = get_samples_alignment_matrix(median_sample_list, True)
+    else:
+        score_matrix = get_samples_alignment_matrix(median_sample_list, False)
     print(score_matrix)
     print("--- %s seconds for getting score matrix ---" %
           (time.time() - start_time))
-    
-    points=[]
-    i=0
-    while i<6:
-        element=random.randrange(0,30,1)
-        if element not in points:
-            points.append(element)
-            i+=1
-    print(points)
-    clustering=[[0,1,4,7,8,3],[1,0,3,6,5,2],[4,3,0,3,4,3],[7,6,3,0,5,4],[6,5,4,5,0,3],[3,2,3,4,3,0]]
-    resultClusters=create_clustering([1,4],{},clustering)
-    print(resultClusters)
-    
+    final_clusters = clustering(median_sample_list, score_matrix)
+    draw_cluster_map(final_clusters)
+
+
+def draw_cluster_map(final_clusters):
+    '''Shows graphical representation of clustering'''
+    tree = nx.Graph()
+    for medoid in final_clusters:
+        tree.add_node(medoid)
+        tree.add_edge('Centre', medoid)
+        for country in final_clusters[medoid]:
+            tree.add_node(country)
+            tree.add_edge(medoid, country)
+    nx.draw(tree, with_labels=True, font_size='6')
+    plt.show()
+
 
 if __name__ == "__main__":
     main()
