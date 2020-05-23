@@ -1,9 +1,6 @@
 import unittest
 import random
 from preprocessing import MedianSample, call_get_median, get_samples_of_median_length_by_country, get_fasta_sequences
-
-
-
 class PreprocTesting(unittest.TestCase):
     def test_get_median(self):
         for _ in range(1, 100):

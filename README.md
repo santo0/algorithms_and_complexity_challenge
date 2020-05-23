@@ -1,11 +1,7 @@
 # algorithms_and_complexity_challenge
 
 ## TODO list
-* Separar per moduls.
-* Testos unitaris.
 * Passar pylint.
-* Ficar parametre per a mostrar gràfica arbre.
-* Ficar parametre per sel·leccionar entre C o Rust per fer alineació.
 * Estudi experimental algoritme amb Rust.
 * Algo més, preguntar als companys.
 
