@@ -1,6 +1,6 @@
 '''
     Title: sarscovhierarchy.py
-    Author: Guillem Camats Felip, Adrià Juvé Sánchez, Martí La Rosa Ramos, Xavier Nadal Reales
+    Author: Guillem Camats Felip, Adria Juve Sanchez, Marti La Rosa Ramos, Xavier Nadal Reales
     Date: 25-5-2020
     Code version: 1.0.0
     Availability: https://github.com/santo0/algorithms_and_complexity_challenge

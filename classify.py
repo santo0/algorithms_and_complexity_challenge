@@ -72,4 +72,8 @@ def clustering(median_sample_list, score_matrix):
         for value in result_clusters[key]:
             clustering_with_geolocalitation[median_sample_list[key].geolocation].append(
                 median_sample_list[value].geolocation)
+    for i, medoid in enumerate(clustering_with_geolocalitation, start=1):
+        print('Cluster {} with medoid {}'.format(i, medoid))
+        for elem in clustering_with_geolocalitation[medoid]:
+            print('\t-> {}'.format(elem))
     return clustering_with_geolocalitation

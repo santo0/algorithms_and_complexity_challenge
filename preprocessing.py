@@ -124,7 +124,6 @@ def get_fasta_sequences(sample_list, dir_path):
                     sample.sample_id)
             try:
                 response = urllib.request.urlopen(url)
-                # es suposa q larxiu donat correspon al id
                 data = response.read().decode('utf-8')
             except urllib.error.HTTPError:
                 print("sample whit id {} doesn't exist".format(sample.sample_id))
