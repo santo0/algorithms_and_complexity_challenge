@@ -11,10 +11,9 @@ import os.path
 import time
 import matplotlib.pyplot as plt
 import networkx as nx
-from preprocessing import get_samples_of_median_length_by_country, get_fasta_sequences
+from preprocessing import get_csv_samples_by_country, get_samples_of_median_length_by_country, get_fasta_sequences
 from sequence_alignment import get_samples_alignment_matrix
 from classify import clustering
-
 
 def main():
     '''Get arguments and calls main functions'''
@@ -34,7 +33,8 @@ def main():
         sys.exit(1)
     csv_path = dir_path + 'sequences.csv'
     start_time = time.time()
-    median_sample_list = get_samples_of_median_length_by_country(csv_path)
+    country_dict = get_csv_samples_by_country(csv_path)
+    median_sample_list = get_samples_of_median_length_by_country(country_dict)
     print("--- %s seconds for preprocessing csv ---" %
           (time.time() - start_time))
     start_time = time.time()
