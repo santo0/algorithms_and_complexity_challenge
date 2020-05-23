@@ -52,7 +52,6 @@ def create_clustering(points, score_matrix):
     next_centers = calculate_min_puntuation(new_clusters, score_matrix)
     if all(elem in next_centers for elem in points):
         return new_clusters
-
     return create_clustering(next_centers, score_matrix)
 
 
