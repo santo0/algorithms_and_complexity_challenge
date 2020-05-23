@@ -33,30 +33,19 @@ def main():
     rust_activated = args.rust
     graph_activated = args.graph
     csv_path = dir_path + 'sequences.csv'
-    print('Start csv preprocess')
-    start_time = time.time()
     country_dict = get_csv_samples_by_country(csv_path)
     median_sample_list = get_samples_of_median_length_by_country(country_dict)
-    print("--- %s seconds for preprocessing csv ---" %
-          (time.time() - start_time))
-    print('Start get fastas')
-    start_time = time.time()
     get_fasta_sequences(median_sample_list, dir_path)
-    print("--- %s seconds for getting fastas ---" % (time.time() - start_time))
-    print('Start full alignment')
-    start_time = time.time()
     if not rust_activated:
         score_matrix = get_samples_alignment_matrix(median_sample_list, True)
     else:
         score_matrix = get_samples_alignment_matrix(median_sample_list, False)
-    print("--- %s seconds for aligning all samples ---" %
-          (time.time() - start_time))
-    print('Start score matrix')
     final_clusters = clustering(median_sample_list, score_matrix)
-    print("--- %s seconds for getting score matrix ---" %
-          (time.time() - start_time))
     if graph_activated:
         draw_cluster_map(final_clusters)
+
+
+
 
 if __name__ == "__main__":
     main()

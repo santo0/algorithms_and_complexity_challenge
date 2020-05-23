@@ -8,7 +8,7 @@
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
-
+from dec_timer import timer
 
 def draw_cluster_map(final_clusters):
     '''Shows graphical representation of clustering'''
@@ -54,7 +54,7 @@ def create_clustering(points, score_matrix):
         return new_clusters
     return create_clustering(next_centers, score_matrix)
 
-
+@timer
 def clustering(median_sample_list, score_matrix):
     '''Does clustering and replaces numbers with country names'''
     points = []
