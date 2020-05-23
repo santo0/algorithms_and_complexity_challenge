@@ -1,38 +1,56 @@
+'''
+    Title: seq_align_tests.py
+    Author: Guillem Camats Felip, Adria Juve Sanchez, Marti La Rosa Ramos, Xavier Nadal Reales
+    Date: 25-5-2020
+    Code version: 1.0.0
+    Availability: https://github.com/santo0/algorithms_and_complexity_challenge
+'''
 import unittest
 from preprocessing import MedianSample
-from sequence_alignment import get_samples_alignment_matrix
 
-seq_1 = 'ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTCTTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAAC'
-seq_2 = 'ATTAAAGGTTTATACCTTCCAACAAACCAACCAAATCTCTTGTAGATCTCTAAACGAACATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAAC'
-seq_3 = 'TTCGATCTACTTGTAGATCTAGTTCTCTAAACGAACTTTAAAATCTGTGTGGAAAACTGTCACTCGGCTGCATGCTTAGTGCAACGTACGTNACT'
-sample_1 = MedianSample('SANTA', '12/25/XX', 'North Pole', sequence=seq_1)
-sample_2 = MedianSample('SATAN', '6/6/6', 'Helvetti', sequence=seq_2)
-sample_3 = MedianSample('SANTANA', '4/20/20', 'Mexico', sequence=seq_3)
+SEQ_1 = 'ATTAAAGGTTTATACCTTCCCAGGTAACAAACCAACCAACTTTCGATCTC'+\
+        'TTGTAGATCTGTTCTCTAAACGAACTTTAAAATCTGTGTGGCTGTCACTC'+\
+        'GGCTGCATGCTTAGTGCACTCACGCAGTATAATTAATAAC'
+SEQ_2 = 'ATTAAAGGTTTATACCTTCCAACAAACCAACCAAATCTCTTGTAGATCTC'+\
+        'TAAACGAACATCTGTGTGGCTGTCACTCGGCTGCATGCTTAGTGCACTCA'+\
+        'CGCAGTATAATTAATAAC'
+SEQ_3 = 'TTCGATCTACTTGTAGATCTAGTTCTCTAAACGAACTTTAAAATCTGTGT'+\
+        'GGAAAACTGTCACTCGGCTGCATGCTTAGTGCAACGTACGTNACT'
+SAMPLE_1 = MedianSample('SANTA',
+                        '12/25/XX',
+                        'North Pole',
+                        sequence=SEQ_1)
+SAMPLE_2 = MedianSample('SATAN',
+                        '6/6/6',
+                        'Helvetti',
+                        sequence=SEQ_2)
+SAMPLE_3 = MedianSample('SANTANA',
+                        '4/20/20',
+                        'Mexico',
+                        sequence=SEQ_3)
 
-class SeqAlignTesting(unittest.TestCase):  
+class SeqAlignTesting(unittest.TestCase):
+    '''Unit test of sequence alignment'''
     def test_seq_align_1(self):
-        global sample_1
-        global sample_2
-        one_to_two = sample_1.align_sequence(sample_2)
-        two_to_one = sample_2.align_sequence(sample_1)
-        self.assertEqual(one_to_two, two_to_one)
-        self.assertEqual(one_to_two, 22)
+        '''Test of sequence alignment between seq_1 and seq_2'''
+        score_1 = SAMPLE_1.align_sequence(SAMPLE_2)
+        score_2 = SAMPLE_2.align_sequence(SAMPLE_1)
+        self.assertEqual(score_1, score_2)
+        self.assertEqual(score_1, 22)
 
     def test_seq_align_2(self):
-        global sample_1
-        global sample_3
-        one_to_three = sample_1.align_sequence(sample_3)
-        three_to_one = sample_3.align_sequence(sample_1)
-        self.assertEqual(one_to_three, three_to_one)
-        self.assertEqual(one_to_three, 60)
+        '''Test of sequence alignment between seq_1 and seq_3'''
+        score_1 = SAMPLE_1.align_sequence(SAMPLE_3)
+        score_2 = SAMPLE_3.align_sequence(SAMPLE_1)
+        self.assertEqual(score_1, score_2)
+        self.assertEqual(score_1, 60)
 
     def test_seq_align_3(self):
-        global sample_2
-        global sample_3
-        two_to_three = sample_2.align_sequence(sample_3)
-        three_to_two = sample_3.align_sequence(sample_2)
-        self.assertEqual(two_to_three, three_to_two)
-        self.assertEqual(two_to_three, 51)
+        '''Test of sequence alignment between seq_2 and seq_3'''
+        score_1 = SAMPLE_2.align_sequence(SAMPLE_3)
+        score_2 = SAMPLE_3.align_sequence(SAMPLE_2)
+        self.assertEqual(score_1, score_2)
+        self.assertEqual(score_1, 51)
 
 if __name__ == '__main__':
     unittest.main()
