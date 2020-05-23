@@ -5,5 +5,5 @@
 * Estudi experimental algoritme amb Rust.
 * Algo més, preguntar als companys.
 
-![Alt Text](https://media1.tenor.com/images/4dd3a92ad3ca25549adb7030ea274157/tenor.gif)
+![Alt Text](https://media.giphy.com/media/l3q2zVr6cu95nF6O4/giphy.gif)
 :D
