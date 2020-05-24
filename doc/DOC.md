@@ -37,6 +37,11 @@ Els arguments acceptats són els següents:
 - -r: Execució del programa utilitzant la implementació en Rust.
 - -g: Mostra la informació resultant dels clústers en format de graf.
 
+Tenint en compte els arguments explicats, per a executar el programa:
+$python3 -d <directori> 
+Els arguments -r i -g són opcionals, depenent del tipus d'execució que l'usuari vol realitzar.
+$python3 -d <directori> -r -g
+
 # Preprocessament
 
 ## Tractament de les seqüències del fitxer csv
