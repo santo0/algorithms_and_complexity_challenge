@@ -14,7 +14,7 @@ Jordi Planes Cid
 
 # Introducció
 
-Aquesta pràctica té com a objectiu analitzar i comparar diferents mostres de Nucleòtids relacionades amb el SARS-CoV-2. Per començar, s'elegeix una mostra representativa de cada país. Aquestes, les comparem, puntuem i agrupem, bastant-nos en la seva similitud. Opcionalment, es mostra la representació gràfica d'aquesta representació.
+Aquesta pràctica té com a objectiu analitzar i comparar diferents mostres de Nucleòtids relacionades amb el SARS-CoV-2. Per començar, s'elegeix una mostra representativa de cada país. Aquestes, les comparem, puntuem i agrupem, bastant-nos en la seva similitud. Opcionalment, es mostra la representació gràfica d'aquesta classificació.
 
 # Requisits
 
@@ -25,7 +25,7 @@ Per a executar el nostre programa es necessitaran les següents llibreries:
 
 Tot i que no és necessari per a executar el programa,
 s'ha creat un fitxer Makefile per a compilat els mòduls de C.
-Per a compilar el codi en Rust: $cd alignment_rust, $cargo build --release
+Per a compilar el codi de Rust: $cd alignment_rust, $cargo build --release
 
 # Main
 
@@ -55,7 +55,7 @@ Els arguments acceptats són els següents:
         close file csvfile
         medians_list <- []
         for country in all countries:
-            median_sample <- get country data located at the length based
+            median_sample <- get country data located at the length based median
             medians_list <- add median sample data
         return medians_list
 
@@ -154,7 +154,7 @@ En el nostre cas s'ha elegit l'algoritme de Needleman-Wunsch per les següents r
 
 1. El cost teòric era el mateix en tots els algoritmes utilitzats i per tant, pel que fa a aquesta característica la diferenciació entre els algoritmes era irrellevant.
 
-2. Encara que és cert alguns dels algoritmes proporcionats tenen menor temps d'execució, al ser una diferència bastant petita, s'ha considerat innecessari preocupar-se'n.
+2. Encara que és cert que alguns dels algoritmes proporcionats tenen menor temps d'execució, al ser una diferència bastant petita, s'ha considerat innecessari preocupar-se'n.
 
 3. La simplicitat d'efectuar l'algoritme també ha sigut una raó molt important en la seva selecció.
 
@@ -226,8 +226,8 @@ Com es pot comprovar, aquesta gràfica s'aproxima al cost teòric "quadràtic" m
 
 ### Consideracions
 
-1. Com s'ha mencionat anteriorment si implementàvem l'algoritme directament en python, el temps d'execució era insostenible i, per tant, es va decidir buscar un altre llenguatge que executés el mateix algoritme a una velocitat acceptable.
-   Al final s'ha acabat decidint per implementar l'algoritme de dues maneres diferents, en C i en Rust per a veure quina de les dues implementacions és més ràpida i provar els dos llenguatges.
+1. Com s'ha mencionat anteriorment, si implementàvem l'algoritme directament en python, el temps d'execució era insostenible i, per tant, es va decidir buscar un altre llenguatge que executés el mateix algoritme a una velocitat acceptable.
+   Al final s'ha acabat decidint per implementar l'algoritme de dues maneres diferents: en C i en Rust per a veure quina de les dues implementacions és més ràpida i provar els dos llenguatges.
 
 2. Per a la implementació de l'algoritme s'ha acabat decidint utilitzar les següents puntuacions:
 
